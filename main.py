@@ -2,8 +2,6 @@
 import fileinput
 from datetime import datetime
 
-
-
 #--ORDER FUNCTION ----------------------------------------------------------------------
 def get_passportid():
     while 1 :
@@ -843,6 +841,7 @@ def get_credit_card():
             return credit_card
             break
         else:
+            print(credit_card)
             print("Expected input for the credit card number is 16 digits without blankspaces, please try again")             
                 
                 
@@ -851,6 +850,7 @@ def get_credit_card():
 
 
 # Main program------------------------------------------------------------------------ 
+'''
 while 1 :
     print("-------Main Menu-------")
     print("Orders(1)")
@@ -915,10 +915,16 @@ while 1 :
         main_menu()
     else:
         print("-------Invalid option. Please try again!-----------")
+'''
 #-----------------------------------------------------------------------------
                                     
 
 
-
-                    
+def test_mock():
+    ch=str(input("what do you want ?"))
+    hc=str(input("what's up?"))
+    if ch == 'yes' and hc == 'yes':
+        return 'yes'
+    else:
+        return 'no'
                                     
