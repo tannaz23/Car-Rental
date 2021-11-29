@@ -692,10 +692,11 @@ def listcustomers():
         print("-----list of current customers menu------")
         file1=open("customers.txt",'r')
         print(file1.read()) 
-        print("Register new (1)")
+        print("Register new customers(1)")
         print("Delete a customer(2)")
         print("Go back(3)")
         ch2=int(input("what do you want ?"))
+        print(ch2)
         if ch2==1:
             #customers()
             first_name=str(get_first_name())
@@ -722,7 +723,7 @@ def listcustomers():
             break
         elif ch2==3 :
             print("----back to customer menu...")
-            #goback()                     
+            #goback()                   
 def searchcustomer():
     while 1:
         passportid=input('Enter your Passport id : ')
@@ -799,7 +800,7 @@ def customers1():
     last_name = str(get_last_name())
     address=str(get_address())
     passportid=str(get_passport_id())
-    credit_card=str(get_credit_card())                
+    credit_card=str(get_credit_card())
 def get_first_name():
     while 1 :
         first_name=input("enter your first name: ")
