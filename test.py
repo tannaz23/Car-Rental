@@ -326,7 +326,7 @@ class CustomerSearchAndBack(unittest.TestCase):
         self.bad_message = 'The customer with that passport number/id does not exist, do you want to try again ? (y/n)\n'
         self.yes_or_not_option = 'N'
     
-    #@unittest.expectedFailure
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_search_customer_failed_back(self, mock_stdout):
         # Customer search customer failed and go back to

@@ -696,7 +696,6 @@ def listcustomers():
         print("Delete a customer(2)")
         print("Go back(3)")
         ch2=int(input("what do you want ?"))
-        print(ch2)
         if ch2==1:
             #customers()
             first_name=str(get_first_name())
