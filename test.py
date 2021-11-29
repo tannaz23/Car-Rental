@@ -346,8 +346,11 @@ class CustomerSearchAndBack(unittest.TestCase):
         self.maxDiff = None
         self.list_menu= 'List of all cars in a car fleet(1)\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)\n'
         self.selected_option = 1
+        
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_list_car_go_back(self)   
-       
+    
   
 
 
