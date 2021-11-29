@@ -286,6 +286,7 @@ def orders():
             delete_order()
             break
         elif ch12=='3' or ch12=='p':
+            print('heel')
             print_order_list()
             print("-------OPTIONS-------")
             print("Search for a specific order(1)")

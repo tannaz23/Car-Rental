@@ -10,15 +10,334 @@ from unittest.mock import patch
 import main
 import io
 
-class MockTest(unittest.TestCase):
-    # Test cases for testing how mock works
+
+class OrdersRegister(unittest.TestCase):
+    # Test case 1
+    # Test case for the option to register a new order
+    # first incorrect formats are inputted for ID, pick up date,
+    # return date and also car selected, then correct options
     def setUp(self):
-        pass
+        self.maxDiff = None
+        self.bad_format_id = '78916-VV'
+        self.bad_format_id_message = 'Passport number is incorrect, try again!'
+        self.good_id = '1234567-A'
+        self.good_id_message = 'Customer found!'
+        self.bad_format_pickupdate = 'Adsdsd'
+        self.bad_format_pickupdate_message = 'Incorrect date format, try again!'
+        self.good_pickupdate = '20/06/1997'
+        self.bad_format_returndate = '4444/44/44'
+        self.bad_format_returndate_message = 'Incorrect date format, try again!'
+        self.good_returndate = '19/06/1997'
+        self.car_types_prices = '''
+        --------------------------------------\n
+        Car type |----------|Price     \n
+        --------------------------------------\n
+        SUV      |----------|15 000 EUR\n
+        Hatchback|----------| 7 000 EUR\n
+        Sedan    |----------|12 000 EUR\n
+        Coupe    |----------|10 000 EUR\n
+        -------\n
+        Please note the daily rate is based on 100 driven kilometers per day on average over the
+        rental period. The fee for driving more than 100 km is based on 1\% of the daily fare for each
+        kilometer over 100km\n'''
+        self.car_type_menu = '''
+        -----Car types-----\n
+        Hatchback (1)\n
+        Sedan (2)\n
+        Coupe (3)\n
+        SUV (4)\n'''
+        self.bad_car_selection = 'Z'
+        self.bad_car_selection_message = 'Invalid option. Please try again!'
+        self.good_car_selection = 1
+        self.good_car_selection_message = 'Order registered! '
     
-    def test_mock_functionality(self):
-        with mock.patch('builtins.input', side_effect=["yes","no"]):
-            result = main.test_mock()
-            self.assertEqual(result, "no")
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_order_register_success(self, mock_stdout):
+        # Orders menu option register with some bad formats
+        # and finally register successfully
+        with mock.patch('builtins.input', side_effect=[
+            self.bad_format_id,
+            self.good_id,
+            self.bad_format_pickupdate,
+            self.good_pickupdate,
+            self.bad_format_returndate,
+            self.good_returndate,
+            self.bad_car_selection,
+            self.good_car_selection
+        ]):
+            main.register_order()
+            self.assertIn(self.bad_format_id_message, mock_stdout.getvalue())
+            self.assertIn(self.bad_format_pickupdate_message, mock_stdout.getvalue())
+            self.assertIn(self.bad_format_returndate_message, mock_stdout.getvalue())
+            self.assertIn(self.car_types_prices, mock_stdout.getvalue())
+            self.assertIn(self.car_type_menu, mock_stdout.getvalue())
+            self.assertIn(self.bad_car_selection_message, mock_stdout.getvalue())
+            self.assertIn(self.good_car_selection_message, mock_stdout.getvalue())
+
+
+class OrdersRegisterFailed(unittest.TestCase):
+    # Test case 2
+    # Test case for the option to register a new order
+    # non exitent customer and unavailable car option but then correct order
+    def setUp(self):
+        self.maxDiff = None
+        self.bad_id = '7891690-V'
+        self.bad_format_id_message = 'User does not exist, do you want to try again ? (y/n)'
+        self.yes_not_selection_id = 'Y'
+        self.good_id = '1234567-A'
+        self.good_id_message = 'Customer found!'
+        self.good_pickupdate = '20/06/1997'
+        self.good_returndate = '19/06/1997'
+        self.car_types_prices = '''
+        --------------------------------------\n
+        Car type |----------|Price     \n
+        --------------------------------------\n
+        SUV      |----------|15 000 EUR\n
+        Hatchback|----------| 7 000 EUR\n
+        Sedan    |----------|12 000 EUR\n
+        Coupe    |----------|10 000 EUR\n
+        -------\n
+        Please note the daily rate is based on 100 driven kilometers per day on average over the
+        rental period. The fee for driving more than 100 km is based on 1\% of the daily fare for each
+        kilometer over 100km\n'''
+        self.car_type_menu = '''
+        -----Car types-----\n
+        Hatchback (1)\n
+        Sedan (2)\n
+        Coupe (3)\n
+        SUV (4)\n'''
+        self.bad_car_selection = 3
+        self.bad_car_selection_message = 'Car of type Coupe is unavailable, Do you want to pick another type (y/n)'
+        self.yes_not_selection_car = 'Y'
+        self.good_car_selection = 2
+        self.good_car_selection_message = 'Order registered! '
+    
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_order_register_failed_success(self, mock_stdout):
+        # Orders menu option register with bad inputs then good
+        # and finally register successfully
+        with mock.patch('builtins.input', side_effect=[
+            self.bad_id,
+            self.yes_not_selection_id,
+            self.good_id,
+            self.good_pickupdate,
+            self.good_returndate,
+            self.bad_car_selection,
+            self.yes_not_selection_car,
+            self.good_car_selection
+        ]):
+            main.register_order()
+            self.assertIn(self.bad_format_id_message, mock_stdout.getvalue())
+            self.assertIn(self.car_types_prices, mock_stdout.getvalue())
+            self.assertIn(self.car_type_menu, mock_stdout.getvalue())
+            self.assertIn(self.bad_car_selection_message, mock_stdout.getvalue())
+            self.assertIn(self.good_car_selection_message, mock_stdout.getvalue())
+
+class OrdersRegisterNotFound(unittest.TestCase):
+    # Test case 3
+    # Test case for the option to register a new order
+    # non exitent customer and go back to order menu
+    def setUp(self):
+        self.maxDiff = None
+        self.bad_id = '7891690-V'
+        self.bad_format_id_message = 'User does not exist, do you want to try again ? (y/n)'
+        self.yes_not_selection_id = 'P'
+        self.orders_menu = '''
+        ------OPTIONS------\n
+        Register an order(1)\n
+        Delete an order(2)\n
+        Print an order list(3)\n
+        Search for a specific order(4)\n
+        Go back(5)\n
+        '''
+    
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_order_register_not_found_back(self, mock_stdout):
+        # Orders menu option register with not found customer
+        # and finally go backl to order menu
+        with mock.patch('builtins.input', side_effect=[
+            self.bad_id,
+            self.yes_not_selection_id,
+        ]):
+            main.register_order()
+            self.assertIn(self.bad_format_id_message, mock_stdout.getvalue())
+            self.assertIn(self.orders_menu, mock_stdout.getvalue())
+
+class OrdersRegisterNotAvailable(unittest.TestCase):
+    # Test case 4
+    # Test case for the option to register a new order
+    # not available car and go back to order menu
+    def setUp(self):
+        self.maxDiff = None
+        self.good_id = '1234567-A'
+        self.good_id_message = 'Customer found!'
+        self.good_pickupdate = '20/06/1997'
+        self.good_returndate = '19/06/1997'
+        self.car_types_prices = '''
+        --------------------------------------\n
+        Car type |----------|Price     \n
+        --------------------------------------\n
+        SUV      |----------|15 000 EUR\n
+        Hatchback|----------| 7 000 EUR\n
+        Sedan    |----------|12 000 EUR\n
+        Coupe    |----------|10 000 EUR\n
+        -------\n
+        Please note the daily rate is based on 100 driven kilometers per day on average over the
+        rental period. The fee for driving more than 100 km is based on 1\% of the daily fare for each
+        kilometer over 100km\n'''
+        self.car_type_menu = '''
+        -----Car types-----\n
+        Hatchback (1)\n
+        Sedan (2)\n
+        Coupe (3)\n
+        SUV (4)\n'''
+        self.bad_car_selection = 4
+        self.bad_car_selection_message = 'Car of type SUV is unavailable, Do you want to pick another type (y/n)'
+        self.yes_not_selection_car = 'S'
+        self.orders_menu = '''
+        ------OPTIONS------\n
+        Register an order(1)\n
+        Delete an order(2)\n
+        Print an order list(3)\n
+        Search for a specific order(4)\n
+        Go back(5)\n
+        '''
+    
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_order_register_not_available_back(self, mock_stdout):
+        # Orders menu option register with not available car
+        # and finally go to orders menu
+        with mock.patch('builtins.input', side_effect=[
+            self.good_id,
+            self.good_pickupdate,
+            self.good_returndate,
+            self.bad_car_selection,
+            self.yes_not_selection_car
+        ]):
+            main.register_order()
+            self.assertIn(self.good_id_message, mock_stdout.getvalue())
+            self.assertIn(self.car_types_prices, mock_stdout.getvalue())
+            self.assertIn(self.car_type_menu, mock_stdout.getvalue())
+            self.assertIn(self.bad_car_selection_message, mock_stdout.getvalue())
+            self.assertIn(self.orders_menu, mock_stdout.getvalue())
+
+
+class OrdersDropSuccessfully(unittest.TestCase):
+    # Test case 5
+    # Test case for the option to drop orders
+    # with bad format and not existing ID
+    # and finally drop successfully
+    def setUp(self):
+        self.maxDiff = None
+        self.bad_format_id = 'PP'
+        self.bad_format_id_message = 'Invalid order id format! Try again'
+        self.bad_id = '999'
+        self.bad_id_message = 'Order id 999 does not exist, do you want to try again ? (Y/y)'
+        self.yes_not_option = 'Y'
+        self.good_id = '2'
+        self.good_id_message = 'Order with the id of 2 has been successfully deleted'
+
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_order_drop(self, mock_stdout):
+        # Orders menu option drop with no good format,
+        # then not available and finally success
+        with mock.patch('builtins.input', side_effect=[
+            self.bad_format_id,
+            self.bad_id,
+            self.yes_not_option,
+            self.good_id,
+        ]):
+            main.delete_order()
+            self.assertIn(self.bad_format_id_message, mock_stdout.getvalue())
+            self.assertIn(self.bad_id_message, mock_stdout.getvalue())
+            self.assertIn(self.good_id_message, mock_stdout.getvalue())
+
+class OrdersDropNotFound(unittest.TestCase):
+    # Test case 6
+    # Test case for the option to drop orders
+    # not existing ID and finally go to orders menu
+    def setUp(self):
+        self.maxDiff = None
+        self.bad_id = '999'
+        self.bad_id_message = 'Order id 999 does not exist, do you want to try again ? (Y/y)'
+        self.yes_not_option = 'I'
+        self.orders_menu = '''
+            ------OPTIONS------\n
+            Register an order(1)\n
+            Delete an order(2)\n
+            Print an order list(3)\n
+            Search for a specific order(4)\n
+            Go back(5)\n
+            '''
+
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_order_drop(self, mock_stdout):
+        # Orders menu option drop with not found
+        # then go to orders menu
+        with mock.patch('builtins.input', side_effect=[
+            self.bad_id,
+            self.yes_not_option
+        ]):
+            main.delete_order()
+            self.assertIn(self.bad_id_message, mock_stdout.getvalue())
+            self.assertIn(self.orders_menu, mock_stdout.getvalue())
+
+class OrdersListAndSearch(unittest.TestCase):
+    # Test case 7
+    # Test case for the option to list orders
+    # and then search for specific one
+    def setUp(self):
+        self.print_menu = '''
+        -------OPTIONS-------\n
+        Search for a specific order(1)\n
+        Go back(2)\n
+        '''
+        self.order_list_option = '3'
+        self.selection_list = '1'
+        self.bad_id = '999'
+        self.bad_id_message = 'Order id 999 does not exist, do you want to try again ? (Y/y)'
+        self.selection_search = 'I'
+    
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_list_and_search(self, mock_stdout):
+        # Orders menu option list all orders
+        # select the search option and go out
+        with mock.patch('builtins.input', side_effect=[
+            self.order_list_option,
+            self.selection_list,
+            self.bad_id,
+            self.selection_search
+        ]):
+            main.orders()
+            self.assertIn(self.bad_id_message, mock_stdout.getvalue())
+            self.assertIn(self.orders_menu, mock_stdout.getvalue())
+
+
+class OrdersBackMenu(unittest.TestCase):
+    # Test case 11
+    # Test case for the option to go main menu from orders
+    def setUp(self):
+        self.maxDiff = None
+        self.orders_selection = 5
+        self.main_menu = '-------Main Menu-------\nOrders(1)\nCars(2)\nCustomers(3)\nRegister an Order(4)\nExit(5)\n'
+
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_order_to_main_menu(self, mock_stdout):
+        # Orders menu option to main menu
+        with mock.patch('builtins.input', side_effect=[
+            self.orders_selection,
+        ]):
+            main.orders()
+            self.assertIn(self.main_menu, mock_stdout.getvalue())
+
 
 class CustomerAddition(unittest.TestCase):
     # Test case 12
