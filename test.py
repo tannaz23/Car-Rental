@@ -337,6 +337,19 @@ class CustomerSearchAndBack(unittest.TestCase):
         ]):
             main.searchcustomer()
             self.assertIn(self.bad_message, mock_stdout.getvalue())
+            
+ class CarShowList(unittes.TestCase):
+    # Test case 20
+    # Test cases for list of all car fleet
+    # Car finding and go back to car menu
+    def setUp(self):
+        self.maxDiff = None
+        self.list_menu= 'List of all cars in a car fleet(1)\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)\n'
+        self.selected_option = 1
+    def test_list_car_go_back(self)   
+       
+  
+
 
 def customerTestCases():
     # Test suite for customer functionality
