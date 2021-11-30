@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 ## IMPORTANT INFORMATION TO RUN THE TESTS!!
-## run command 'python -m unittest test.py' 
+## run command to test with this file 'python -m unittest test.py' 
 
+## run command  to run coverage package over tests 'coverage run -m unittest discover'
+## then run 'coverage report' or 'coverage html' 
 import unittest
 from unittest import mock
 from unittest.mock import patch
@@ -293,13 +295,14 @@ class OrdersListAndSearch(unittest.TestCase):
     # Test case for the option to list orders
     # and then search for specific one
     def setUp(self):
+        self.maxDiff = None
         self.print_menu = '''
         -------OPTIONS-------\n
         Search for a specific order(1)\n
         Go back(2)\n
         '''
-        self.order_list_option = '3'
-        self.selection_list = '1'
+        self.order_list_option = 3
+        self.selection_list = 1
         self.bad_id = '999'
         self.bad_id_message = 'Order id 999 does not exist, do you want to try again ? (Y/y)'
         self.selection_search = 'I'
@@ -316,9 +319,108 @@ class OrdersListAndSearch(unittest.TestCase):
             self.selection_search
         ]):
             main.orders()
+            self.assertIn(self.print_menu, mock_stdout.getvalue())
             self.assertIn(self.bad_id_message, mock_stdout.getvalue())
+
+class OrdersListAndGoBack(unittest.TestCase):
+    # Test case 8
+    # Test case for the option to list orders
+    # and then go back to orders menu
+    def setUp(self):
+        self.maxDiff = None
+        self.print_menu = '''
+        -------OPTIONS-------\n
+        Search for a specific order(1)\n
+        Go back(2)\n
+        '''
+        self.order_list_option = 3
+        self.selection_list = 2
+        self.orders_menu = '''
+            ------OPTIONS------\n
+            Register an order(1)\n
+            Delete an order(2)\n
+            Print an order list(3)\n
+            Search for a specific order(4)\n
+            Go back(5)\n
+            '''
+    
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_list_and_back(self, mock_stdout):
+        # Orders menu option list all orders
+        # and go back to orders menu
+        with mock.patch('builtins.input', side_effect=[
+            self.order_list_option,
+            self.selection_list,
+        ]):
+            main.orders()
+            self.assertIn(self.print_menu, mock_stdout.getvalue())
             self.assertIn(self.orders_menu, mock_stdout.getvalue())
 
+class OrdersSearchAndGoBack(unittest.TestCase):
+    # Test case 9
+    # Test case for the option search specific
+    # order first failing, formats. then not found
+    # finally success an go to orders menu
+    def setUp(self):
+        self.maxDiff = None
+        self.bad_format_id = 'Y'
+        self.bad_format_message = 'Invalid order id format! Try again\n'
+        self.bad_id = '999'
+        self.bad_id_message = 'Order id 999 does not exist, do you want to try again ? (Y/y)'
+        self.yes_not_option = 'Y'
+        self.good_id = '2'
+        self.search_menu = '''
+        -----options ------\n
+        Delete the order(1)\n
+        Go back(2)\n
+        '''
+
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_search_and_back(self, mock_stdout):
+        # Orders menu option search an order
+        # and go back to orders menu
+        with mock.patch('builtins.input', side_effect=[
+            self.bad_format_id,
+            self.bad_id,
+            self.yes_not_option,
+            self.good_id
+        ]):
+            main.search_order()
+            self.assertIn(self.bad_format_message, mock_stdout.getvalue())
+            self.assertIn(self.bad_id_message, mock_stdout.getvalue())
+            self.assertIn(self.search_menu, mock_stdout.getvalue())
+
+class OrdersSearchAndDelete(unittest.TestCase):
+    # Test case 10
+    # Test case for the option search specific
+    # order and delete the one selected
+    def setUp(self):
+        self.maxDiff = None
+        self.good_id = '4'
+        self.search_menu = '''
+        -----options ------\n
+        Delete the order(1)\n
+        Go back(2)\n
+        '''
+        self.option_selected = '1'
+        self.id_to_delete = '4'
+        self.delete_message = 'Order with the id of 4 has been successfully deleted\n'
+
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_search_and_delete(self, mock_stdout):
+        # Orders menu option search an order
+        # and delete the one selected
+        with mock.patch('builtins.input', side_effect=[
+            self.good_id,
+            self.option_selected,
+            self.id_to_delete,
+        ]):
+            main.search_order()
+            self.assertIn(self.search_menu, mock_stdout.getvalue())
+            self.assertIn(self.delete_message, mock_stdout.getvalue())
 
 class OrdersBackMenu(unittest.TestCase):
     # Test case 11
