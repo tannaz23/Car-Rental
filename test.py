@@ -759,19 +759,8 @@ class CustomerSearchAndBack(unittest.TestCase):
             main.searchcustomer()
             self.assertIn(self.bad_message, mock_stdout.getvalue())
            
-        
-def customerTestCases():
-    # Test suite for customer functionality
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader())
 
-if __name__ == '__main__':
-  unittest.TextTestRunner(verbosity=2).run(suite())
-
-
-
-
-class CarShowList(unittes.TestCase):
+class CarShowList(unittest.TestCase):
     # Test case 20
     # Test cases for list of all car fleet
     # and then go back to car menu
@@ -786,7 +775,7 @@ class CarShowList(unittes.TestCase):
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_list_car_go_back(self,moch_stdout):
         with moch.patch('builtins.input', side_effect=[
-            self.selected_option
+            self.selected_option,
             self.selected_option_second
         ]):
             main.cars()
@@ -807,28 +796,28 @@ class CarShowListSearch(unittest.TestCase):
         self.selected_option = 1
         self.selected_option_second = 2
         self.NotFound_License = '1234ABC'
-        self.Continue_message = 'License number 1234ABC does not exist.\nDo you want to try again?(Y/N)
+        self.Continue_message = 'License number 1234ABC does not exist.\nDo you want to try again?(Y/N)'
         self.YorN_option_N = 'N'
         
-     @unittest.expectedFailure
-     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-      def test_list_car_search(self, mock_stdout):
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_list_car_search(self, mock_stdout):
          with moch.patch('builtins.input', side_effect=[
             self.selected_option,
             self.selected_option_second,
             self.NotFound_License,
             self.YorN_option_N
          ]):
-        main.cars()
-        self.assertIn(self.list_carmenu, mock_stdout.getvalue())
-        self.assertIn(self.Continue_message, mock_stdout.getvalue())
-        self.assertIn(self.car_menu, mock_stdout.getvalue())
+            main.cars()
+            self.assertIn(self.list_carmenu, mock_stdout.getvalue())
+            self.assertIn(self.Continue_message, mock_stdout.getvalue())
+            self.assertIn(self.car_menu, mock_stdout.getvalue())
         
- class CarUnavailableSearch(unittest.TestCase):
+class CarUnavailableSearch(unittest.TestCase):
     # Test case 22
     # Test case for list of unavailable cars and search for one
     # not found and go back
-     def setUp(self):
+    def setUp(self):
             self.maxDiff = None
             self.select_list_car = 2
             self.list_unavailable_menu = '------list of all cars unavailable------'
@@ -855,21 +844,21 @@ class CarShowListSearch(unittest.TestCase):
             self.assertIn(self.notfinding_message, mock_stdout.getvalue())
    
   
- class CarUnavailableEmptyList(unittest.TestCase):
+class CarUnavailableEmptyList(unittest.TestCase):
        # Test case 23
        # List of all unavailable cars
        # List is empty and return to car menu
-  def setUp(self):
+    def setUp(self):
        self.maxDiff = None
        self.select_list_car = 2
        self.list_unavailable_message = '------list of all cars unavailable------\n'
-       self.list_unavailable_empty_message = "\**** LIST IS EMPTY ! ****
+       self.list_unavailable_empty_message = "\**** LIST IS EMPTY ! ****"
        self.select_option_message = 'Options\nSearch for a specific car(1)\nGo back(2)'
        self.select_option= 2
         
-       @unittest.expectedFailure
-       @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)  
-        def test_car_unavailableList_empty(self, mock_stdout):
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)  
+    def test_car_unavailableList_empty(self, mock_stdout):
         with mock.patch('builtins.input', side_effect=[
            self.select_list_car,
             self.select_option
@@ -883,16 +872,16 @@ class CarShowListSearch(unittest.TestCase):
 class CarAvailableList(unittest.TestCase):
     # Test case 24
     # List of all available cars and go back to car menu
-  def setUp(self):
+    def setUp(self):
        self.maxDiff = None
        self.select_availableList = 3
        self.availableList_message = '------list of all cars available------\n'
        self.option_message = 'option\nSearch for a specific car(1)\nGo back(2)'
        self.select_option= 2    
     
-     @unittest.expectedFailure
-     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-        def test_Car_available_list(self, mock_stdout):
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_Car_available_list(self, mock_stdout):
         with mock.patch('builtins.input', side_effect=[
             self.select_availableList,
             self.select_option     
@@ -902,33 +891,33 @@ class CarAvailableList(unittest.TestCase):
            self.assertIn(self.availableList_message, mock_stdout.getvalue())
            self.assertIn(self.option_message, mock_stdout.getvalue())
         
- class CarAvailableList(unittest.TestCase):
+class CarAvailableList(unittest.TestCase):
     # Test case 25
     # List of all available cars is empty and go back to main menu
-  def setUp(self):
-       self.maxDiff = None
+    def setUp(self):
+        self.maxDiff = None
         self.carmenu_message = '\n-------Cars menu-------\nList of all cars in a car fleet(1)\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)\n'
-       self.select_availableList = 3
-       self.availableList_message = '------list of all cars available------\n'
-       self.availableList_empty_message = '\n\LIST IS EMPTY'
-       self.option_message = 'option\nSearch for a specific car(1)\nGo back(2)'
-       self.select_option= 2
+        self.select_availableList = 3
+        self.availableList_message = '------list of all cars available------\n'
+        self.availableList_empty_message = '\n\LIST IS EMPTY'
+        self.option_message = 'option\nSearch for a specific car(1)\nGo back(2)'
+        self.select_option= 2
     
-     @unittest.expectedFailure
-     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-        def test_car_available_list_empty(self, mock_stdout):
-            with moch.patch('builtins.input', side_effect=[
-                self.select_availableList,
-                self.select_option
-         ]): 
-                main.cars()
-                self.assertIn(self.carmenu_message, mock_stdout.getvalue())
-                self.assertIn(self.availableList_message, mock_stdout.getvalue())
-                self.assertIn(self.availableList_empty_message, .ock_stdout.getvalue())
-                self.assertIn(self.option_message, mock_stdout.getvalue())
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_car_available_list_empty(self, mock_stdout):
+        with moch.patch('builtins.input', side_effect=[
+            self.select_availableList,
+            self.select_option
+        ]): 
+            main.cars()
+            self.assertIn(self.carmenu_message, mock_stdout.getvalue())
+            self.assertIn(self.availableList_message, mock_stdout.getvalue())
+            self.assertIn(self.availableList_empty_message, mock_stdout.getvalue())
+            self.assertIn(self.option_message, mock_stdout.getvalue())
  
 
-  class CarSearch((unittest.TestCase):
+class CarSearch(unittest.TestCase):
     # Test case 26
     # Test cases for searching a car with correct format and found
     def setUp(self):
@@ -943,7 +932,7 @@ class CarAvailableList(unittest.TestCase):
               
     @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)      
-     def test_search_car_success(self, mock_stdout):
+    def test_search_car_success(self, mock_stdout):
         # car search and sign
         with mock.patch('builtins.input', side_effect=[
             self.good_license,
@@ -954,11 +943,11 @@ class CarAvailableList(unittest.TestCase):
             self.assertIn(self.fining_license_message, mock_stdout.getvalue())
             self.assertIn(self.option_message, mock_stdout.getvalue())
             self.assertIn(self.assign_success_message, mock_stdout.getvalue())
- class CarSearchmulti((unittest.TestCase):
+class CarSearchmulti(unittest.TestCase):
     # Test case 27
     # Search for specific car, with all correct information (not found at first but then found)
     # move to unavailable and go back to menu with pressign g (not Y or N)
-       def setUp(self):
+    def setUp(self):
         self.maxDiff = None
         self.licensenum_message = '\nEnter license number :'
         self.bad_license = '1234BBB'                    
@@ -974,7 +963,7 @@ class CarAvailableList(unittest.TestCase):
                   
     @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)      
-     def test_search_car_success_assign(self, mock_stdout):
+    def test_search_car_success_assign(self, mock_stdout):
         # car search and sign
         with mock.patch('builtins.input', side_effect=[                 
                self.bad_license,
@@ -991,11 +980,11 @@ class CarAvailableList(unittest.TestCase):
             self.assertIn(self.option_message_second , mock_stdout.getvalue())          
             self.assertIn(self.assign_success_message , mock_stdout.getvalue())          
                       
-  class CarSearchwrong((unittest.TestCase):
+class CarSearchwrong(unittest.TestCase):
     # Test case 28
     # Search for specific car with incorrect format
     # Then input a correct one and return to menu
-           def setUp(self):
+    def setUp(self):
         self.maxDiff = None
         self.licensenum_message = '\nEnter license number :'
         self.bad_license = 'AA123456'                    
@@ -1006,9 +995,9 @@ class CarAvailableList(unittest.TestCase):
         self.option_message_second = '\nOption\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars\nGo back(3)'
         self.select_option = 3
   
-  @unittest.expectedFailure
-  @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-     def test_search_car_wrong_format(self, mock_stdout):
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_search_car_wrong_format(self, mock_stdout):
         with mock.patch('builtins.input', side_effect=[   
           self.bad_license,
           self.good_license,
@@ -1021,32 +1010,32 @@ class CarAvailableList(unittest.TestCase):
             self.assertIn(self.finfing_infromation_message, mock_stdout.getvalue())
             self.assertIn(self.option_message_second , mock_stdout.getvalue())
                        
-class AddingNewCar((unittest.TestCase):
+class AddingNewCar(unittest.TestCase):
     # Test case 29
     # Add a new car
     # fail all inputs at first and then input correct one
-          def setUp(self):
-           self.maxDiff = None        
-           self.choose_option_carmenu = 5
-           self.bad_format_license = 'AAA1346'
-           self.bad_format_license_message = 'License number is of incorrect format, try again\n
-           self.good_format_license = '1234ABC'
-           self.bad_format_manufacture = '1A'
-           self.bad_format_manufacture_message = 'Invalid format, try again!\n' 
-           self.good_format_manufacture = 'Opel'
-           self.bad_format_name = '2A'
-           self.bad_format_name_message = 'Invalid format, try again!\n'  
-           self.good_format_name = 'Astra'
-           self.bad_format_year = '20222A'        
-           self.bad_format_year_message = 'Invalid format, try again!\n'  
-           self.good_format_year = '2021'
-           self.bad_format_energy = 'petrolll'
-           self.bad_format_energy_message = 'Invalid format, try again!\n'
-           self.good_format_energy = 'petrol'
-           self.bad_format_car_choose = 6
-           self.bad_format_car_choose_message = 'Invalid format, try again!\n'
-           self.good_format_car_choose= 4
-           self.final_message = 'Astra- 2021- 1234ABC - petrol- SUV- availability= \nCar has been added' 
+    def setUp(self):
+        self.maxDiff = None        
+        self.choose_option_carmenu = 5
+        self.bad_format_license = 'AAA1346'
+        self.bad_format_license_message = 'License number is of incorrect format, try again\n'
+        self.good_format_license = '1234ABC'
+        self.bad_format_manufacture = '1A'
+        self.bad_format_manufacture_message = 'Invalid format, try again!\n' 
+        self.good_format_manufacture = 'Opel'
+        self.bad_format_name = '2A'
+        self.bad_format_name_message = 'Invalid format, try again!\n'  
+        self.good_format_name = 'Astra'
+        self.bad_format_year = '20222A'        
+        self.bad_format_year_message = 'Invalid format, try again!\n'  
+        self.good_format_year = '2021'
+        self.bad_format_energy = 'petrolll'
+        self.bad_format_energy_message = 'Invalid format, try again!\n'
+        self.good_format_energy = 'petrol'
+        self.bad_format_car_choose = 6
+        self.bad_format_car_choose_message = 'Invalid format, try again!\n'
+        self.good_format_car_choose= 4
+        self.final_message = 'Astra- 2021- 1234ABC - petrol- SUV- availability= \nCar has been added' 
   
     @unittest.expectedFailure               
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
@@ -1072,9 +1061,9 @@ class AddingNewCar((unittest.TestCase):
             self.assertEqual(mock_stdout.getvalue(), self.bad_format_manufacture_message)
             self.assertEqual(result, self.good_format_manufacture)
                    
-      @unittest.expectedFailure             
-      @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)              
-     def test_bad_format_name(self, mock_stdout):
+    @unittest.expectedFailure             
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)              
+    def test_bad_format_name(self, mock_stdout):
         # name function
         with mock.patch('builtins.input', side_effect=[                   
            self.bad_format_name,
@@ -1087,7 +1076,7 @@ class AddingNewCar((unittest.TestCase):
                    
     @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)                     
-      def test_bad_format_year(self, mock_stdout):
+    def test_bad_format_year(self, mock_stdout):
         # year function
         with mock.patch('builtins.input', side_effect=[
             self.bad_format_year,
@@ -1099,7 +1088,7 @@ class AddingNewCar((unittest.TestCase):
                    
     @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)                     
-      def test_bad_format_energy(self, mock_stdout):
+    def test_bad_format_energy(self, mock_stdout):
         # energy function
         with mock.patch('builtins.input', side_effect=[
          self.bad_format_energy,        
@@ -1113,7 +1102,7 @@ class AddingNewCar((unittest.TestCase):
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_bad_format_car_addition(self, mock_stdout):
         # car addition function                
-     with moch.patch('builtins.input', side_effect=[              
+        with moch.patch('builtins.input', side_effect=[              
            self.choose_option_carmenu,
            self.bad_format_license,
            self.good_format_license,
@@ -1129,25 +1118,25 @@ class AddingNewCar((unittest.TestCase):
            self.good_format_car_choose         
       ]):
             result = main.cars()   
-             self.assertEqual(mock_stdout.getvalue(), self.bad_format_car_choose_message)       
-             self.assertEqual(mock_stdout.getvalue(), self.final_message)       
+            self.assertEqual(mock_stdout.getvalue(), self.bad_format_car_choose_message)       
+            self.assertEqual(mock_stdout.getvalue(), self.final_message)       
                    
-    class AddingNewCar((unittest.TestCase):
+class AddingNewCar(unittest.TestCase):
     # Test case 30
     # Add a new car
     # all inputs are correct
-          def setUp(self):
-           self.maxDiff = None     
-           self.choose_option_carmenu = 5
-           self.good_format_license = '1234ABC'
-           self.good_format_manufacture = 'Opel'
-           self.good_format_name = 'Astra' 
-           self.good_format_year = '2021'
-           self.good_format_energy = 'petrol'
-           self.good_format_car_choose= 3
-           self.final_message = 'Astra- 2021- 1234ABC - petrol- Coupe - availability=1 \nCar has been added'
+    def setUp(self):
+        self.maxDiff = None     
+        self.choose_option_carmenu = 5
+        self.good_format_license = '1234ABC'
+        self.good_format_manufacture = 'Opel'
+        self.good_format_name = 'Astra' 
+        self.good_format_year = '2021'
+        self.good_format_energy = 'petrol'
+        self.good_format_car_choose= 3
+        self.final_message = 'Astra- 2021- 1234ABC - petrol- Coupe - availability=1 \nCar has been added'
                        
-     def test_format_license(self)
+    def test_format_license(self):
          # license function only good format            
          with mock.patch('builtins.input', side_effect=[
             self.good_format_license,
@@ -1155,7 +1144,7 @@ class AddingNewCar((unittest.TestCase):
             result = main.get_car_manu()
             self.assertEqual(result, self.good_name)           
                        
-       def test_format_manufacture(self):
+    def test_format_manufacture(self):
         # manufacture function
         with mock.patch('builtins.input', side_effect=[
             self.good_format_manufacture,
@@ -1163,7 +1152,7 @@ class AddingNewCar((unittest.TestCase):
             result = main.get_car_manu()
             self.assertEqual(result, self.good_format_manufacture)    
                        
-       def test_format_name(self):
+    def test_format_name(self):
         # name function
         with mock.patch('builtins.input', side_effect=[
             self.good_format_name,
@@ -1171,7 +1160,7 @@ class AddingNewCar((unittest.TestCase):
             result = main.get_car_name()
             self.assertEqual(result, self.good_format_name)                    
         
-        def test_format_year(self):
+    def test_format_year(self):
         # year function
         with mock.patch('builtins.input', side_effect=[
             self.good_format_year,
@@ -1179,7 +1168,7 @@ class AddingNewCar((unittest.TestCase):
             result = main.get_make_year()
             self.assertEqual(result, self.good_format_year) 
                        
-        def test_format_energy(self)
+    def test_format_energy(self):
           # type energy function
          with mock.patch('builtins.input', side_effect=[
             self.good_format_energy,
