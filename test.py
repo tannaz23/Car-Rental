@@ -377,7 +377,7 @@ class CarShowList(unittes.TestCase):
 class CarShowListSearch(unittest.TestCase):
     # Test case 21
     # Test case for list of all cars in a car fleet and successfully search one car
-    # Car finds and then go back to car menu
+    # Car not finds and then go back to car menu
     # option 2 is for selecting going back on selecting specific car section
     def setUp(self):
         self.maxDiff = None
@@ -385,13 +385,84 @@ class CarShowListSearch(unittest.TestCase):
         self.car_menu = '------Car menu------\nList of all cars in a car fleet\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)\n'
         self.selected_option = 1
         self.selected_option_second = 2
+        self.NotFound_License = '1234ABC'
+        self.Continue_message = 'License number 1234ABC does not exist.\nDo you want to try again?(Y/N)
+        self.YorN_option_N = 'N'
         
+     @unittest.expectedFailure
+     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+      def test_list_car_search(self, mock_stdout):
+         with moch.patch('builtins.input', side_effect=[
+            self.selected_option,
+            self.selected_option_second,
+            self.NotFound_License,
+            self.YorN_option_N
+         ]):
+        main.cars()
+        self.assertIn(self.list_carmenu, mock_stdout.getvalue())
+        self.assertIn(self.Continue_message, mock_stdout.getvalue())
+        self.assertIn(self.car_menu, mock_stdout.getvalue())
         
+ class CarUnavailableSearch(unittest.TestCase):
+    # Test case 22
+    # Test case for list of unavailable cars and search for one
+    # not found and go back
+     def setUp(self):
+            self.maxDiff = None
+            self.select_list_car = 2
+            self.list_unavailable_menu = '------list of all cars unavailable------'
+            self.select_option = 'Options\nSearch for a specific car(1)\nGo back(2)'
+            self.select_option = 1
+            self.good_license = '1234AAA'
+            self.notfinding_message = 'License number 1234AAA does not exist.\nDo you want to try again?'
+            self.YorNo_option = 'N'
+     
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)  
+    def test_car_UnavailableList_search(self, mock_stdout):
+      # car search failed and go back to
+      # car main menu
+        with mock.patch('builtins.input', side_effect=[
+            self.select_list_car,
+            self.select_option,
+            self.good_license,
+            self.YorNo_option            
+      ]):
+            main.cars()
+            self.assertIn(self.list_unavailable_menu, mock_stdout.getvalue())
+            self.assertIn(self.select_option, mock_stdout.getvalue())
+            self.assertIn(self.notfinding_message, mock_stdout.getvalue())
+   
+  
+ class CarUnavailableEmptyList(unittest.TestCase):
+       # Test case 23
+       # List of all unavailable cars
+       # List is empty and return to car menu
+   def setUp(self):
+        self.maxDiff = None
+        self.select_list_car = 2
+        self.list_unavailable_message = '------list of all cars unavailable------\n'
+        self.list_unavailable_empty_message = "\**** LIST IS EMPTY ! ****
+        self.select_option_message = 'Options\nSearch for a specific car(1)\nGo back(2)'
+        self.select_option= 2
+        
+       @unittest.expectedFailure
+       @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)  
+        def test_car_unavailableList_empty(self, mock_stdout):
+        with mock.patch('builtins.input', side_effect=[
+           self.select_list_car,
+            self.select_option
+        ]):
+
+            main.cars()
+            self.assertIn(self.list_unavailable_message, mock_stdout.getvalue())
+            self.assertIn(self.unavailable_empty_message, mock_stdout.getvalue())
+            self.assertIn(self.select_option_message, mock_stdout.getvalue())
+            
+            
+           
+
     
     
       
-
-
-
-
 
