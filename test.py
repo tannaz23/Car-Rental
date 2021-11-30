@@ -438,13 +438,13 @@ class CarShowListSearch(unittest.TestCase):
        # Test case 23
        # List of all unavailable cars
        # List is empty and return to car menu
-   def setUp(self):
-        self.maxDiff = None
-        self.select_list_car = 2
-        self.list_unavailable_message = '------list of all cars unavailable------\n'
-        self.list_unavailable_empty_message = "\**** LIST IS EMPTY ! ****
-        self.select_option_message = 'Options\nSearch for a specific car(1)\nGo back(2)'
-        self.select_option= 2
+  def setUp(self):
+       self.maxDiff = None
+       self.select_list_car = 2
+       self.list_unavailable_message = '------list of all cars unavailable------\n'
+       self.list_unavailable_empty_message = "\**** LIST IS EMPTY ! ****
+       self.select_option_message = 'Options\nSearch for a specific car(1)\nGo back(2)'
+       self.select_option= 2
         
        @unittest.expectedFailure
        @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)  
@@ -454,13 +454,33 @@ class CarShowListSearch(unittest.TestCase):
             self.select_option
         ]):
 
-            main.cars()
-            self.assertIn(self.list_unavailable_message, mock_stdout.getvalue())
-            self.assertIn(self.unavailable_empty_message, mock_stdout.getvalue())
-            self.assertIn(self.select_option_message, mock_stdout.getvalue())
+         main.cars()
+         self.assertIn(self.list_unavailable_message, mock_stdout.getvalue())
+         self.assertIn(self.unavailable_empty_message, mock_stdout.getvalue())
+         self.assertIn(self.select_option_message, mock_stdout.getvalue())
+ 
+class CarAvailableList(unittest.TestCase):
+    # Test case 24
+    # List of all available cars and go back to car menu
+  def setUp(self):
+       self.maxDiff = None
+       self.select_availableList = 3
+       self.availableList_message = '------list of all cars available------\n'
+       self.option_message = 'option\nSearch for a specific car(1)\nGo back(2)'
+       self.select_option= 1    
+    
+     @unittest.expectedFailure
+     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+        def test_Car_available_list(self, mock_stdout):
+        with mock.patch('builtins.input', side_effect=[
+            self.select_availableList,
+            self.select_option     
+        ]):
             
-            
-           
+           main.cars()
+           self.assertIn(self.availableList_message, mock_stdout.getvalue())
+           self.assertIn(self.option_message, mock_stdout.getvalue())
+        
 
     
     
