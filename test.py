@@ -627,11 +627,91 @@ class AddingNewCar((unittest.TestCase):
            self.bad_format_car_choose_message = 'Invalid format, try again\n'
            self.good_format_car_choose= 4
            self.final_message = 'Astra- 2021- 1234ABC - petrol- SUV- availability= \nCar has been added' 
-           
-                       
-                       
-                       
-                       
-                       
-                       
+  
+    @unittest.expectedFailure               
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_bad_format_license(self, mock_stdout):
+        # license function
+        with mock.patch('builtins.input', side_effect=[
+            self.bad_format_license,
+            self.good_format_license
+        ]):
+            result = main.get_license_plate()
+            self.assertEqual(mock_stdout.getvalue(), elf.bad_format_license_message)
+            self.assertEqual(result, self.good_format_license)  
+                   
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)                    
+    def test_bad_format_manufacture(self, mock_stdout):
+        # manufacture function
+        with mock.patch('builtins.input', side_effect=[             
+        self.bad_format_manufacture,
+        self.good_format_manufacture
+        ]):
+            result = main.get_car_manu()
+            self.assertEqual(mock_stdout.getvalue(), self.bad_format_manufacture_message)
+            self.assertEqual(result, self.good_format_manufacture)
+                   
+      @unittest.expectedFailure             
+      @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)              
+     def test_bad_format_name(self, mock_stdout):
+        # name function
+        with mock.patch('builtins.input', side_effect=[                   
+           self.bad_format_name,
+           self.good_format_name
+        
+         ]):
+            result = main.get_car_name()
+            self.assertEqual(mock_stdout.getvalue(), self.bad_format_name_message)
+            self.assertEqual(result, self.good_format_name)          
+                   
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)                     
+      def test_bad_format_year(self, mock_stdout):
+        # year function
+        with mock.patch('builtins.input', side_effect=[
+            self.bad_format_year,
+            self.good_format_year
+        ]):
+            result = main.get_make_year()
+            self.assertEqual(mock_stdout.getvalue(), self.bad_format_year_message)
+            self.assertEqual(result, self.good_format_year)               
+                   
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)                     
+      def test_bad_format_energy(self, mock_stdout):
+        # energy function
+        with mock.patch('builtins.input', side_effect=[
+         self.bad_format_energy,        
+         self.good_format_energy          
+      ]):
+            result = main.get_car_type_energy()
+            self.assertEqual(mock_stdout.getvalue(), self.bad_format_energy_message)
+            self.assertEqual(result, self.good_format_energy)                 
+                   
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_bad_format_car_addition(self, mock_stdout):
+        # car addition function                
+     with moch.patch('builtins.input', side_effect=[              
+           self.choose_option_carmenu,
+           self.bad_format_license,
+           self.good_format_license,
+           self.bad_format_manufacture,
+           self.good_format_manufacture,
+           self.bad_format_name, 
+           self.good_format_name,
+           self.bad_format_year,       
+           self.good_format_year,
+           self.bad_format_energy,
+           self.good_format_energy,
+           self.bad_format_car_choose,
+           self.good_format_car_choose         
+      ]):
+            result = main.cars()             
+             self.assertEqual(mock_stdout.getvalue(), self.bad_format_car_choose_message)       
+             self.assertEqual(mock_stdout.getvalue(), self.final_message)       
+                   
+                  
+                   
+                   
 
