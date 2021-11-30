@@ -467,7 +467,7 @@ class CarAvailableList(unittest.TestCase):
        self.select_availableList = 3
        self.availableList_message = '------list of all cars available------\n'
        self.option_message = 'option\nSearch for a specific car(1)\nGo back(2)'
-       self.select_option= 1    
+       self.select_option= 2    
     
      @unittest.expectedFailure
      @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
@@ -486,11 +486,12 @@ class CarAvailableList(unittest.TestCase):
     # List of all available cars is empty and go back to main menu
   def setUp(self):
        self.maxDiff = None
+        self.carmenu_message = '\n-------Cars menu-------\nList of all cars in a car fleet(1)\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)\n'
        self.select_availableList = 3
        self.availableList_message = '------list of all cars available------\n'
        self.availableList_empty_message = '\n\LIST IS EMPTY'
        self.option_message = 'option\nSearch for a specific car(1)\nGo back(2)'
-       self.select_option= 1 
+       self.select_option= 2
     
      @unittest.expectedFailure
      @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
@@ -500,12 +501,36 @@ class CarAvailableList(unittest.TestCase):
                 self.select_option
          ]): 
                 main.cars()
+                self.assertIn(self.carmenu_message, mock_stdout.getvalue())
                 self.assertIn(self.availableList_message, mock_stdout.getvalue())
                 self.assertIn(self.availableList_empty_message, .ock_stdout.getvalue())
                 self.assertIn(self.option_message, mock_stdout.getvalue())
-    
+ 
+
+  class CarSearch((unittest.TestCase):
+    # Test case 26
+    # Test cases for searching a car with correct format and found
+    def setUp(self):
+        self.maxDiff = None
+        self.licensenum_message = '\nEnter license number :'
+        self.good_license = '1234ABC'
+        self.fining_license_message = '\n1234ABC found in system\n '
+        self.finfing_infromation_message = '\nName,Manufacturer,Year made,License number, Type of energy, category,Availavility'
+        self.option_message = '\nOption\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars\nGo back(3)'
+                  
         
+
+   
+                  
+                  
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)      
      
+                  
+                  
+                  
+                  main.searchcar()
+                  
         
     
     
