@@ -481,7 +481,33 @@ class CarAvailableList(unittest.TestCase):
            self.assertIn(self.availableList_message, mock_stdout.getvalue())
            self.assertIn(self.option_message, mock_stdout.getvalue())
         
-
+ class CarAvailableList(unittest.TestCase):
+    # Test case 25
+    # List of all available cars is empty and go back to main menu
+  def setUp(self):
+       self.maxDiff = None
+       self.select_availableList = 3
+       self.availableList_message = '------list of all cars available------\n'
+       self.availableList_empty_message = '\n\LIST IS EMPTY'
+       self.option_message = 'option\nSearch for a specific car(1)\nGo back(2)'
+       self.select_option= 1 
+    
+     @unittest.expectedFailure
+     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+        def test_car_available_list_empty(self, mock_stdout):
+            with moch.patch('builtins.input', side_effect=[
+                self.select_availableList,
+                self.select_option
+         ]): 
+                main.cars()
+                self.assertIn(self.availableList_message, mock_stdout.getvalue())
+                self.assertIn(self.availableList_empty_message, .ock_stdout.getvalue())
+                self.assertIn(self.option_message, mock_stdout.getvalue())
+    
+        
+     
+        
+    
     
     
       
