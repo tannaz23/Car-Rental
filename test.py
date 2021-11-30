@@ -567,8 +567,8 @@ class CarAvailableList(unittest.TestCase):
             self.assertIn(self.option_message, mock_stdout.getvalue())       
             self.assertIn(self.fining_license_message, mock_stdout.getvalue())
             self.assertIn(self.finfing_infromation_message , mock_stdout.getvalue())       
-             self.assertIn(self.option_message_second , mock_stdout.getvalue())          
-             self.assertIn(self.assign_success_message , mock_stdout.getvalue())          
+            self.assertIn(self.option_message_second , mock_stdout.getvalue())          
+            self.assertIn(self.assign_success_message , mock_stdout.getvalue())          
                       
   class CarSearchwrong((unittest.TestCase):
     # Test case 28
@@ -707,11 +707,74 @@ class AddingNewCar((unittest.TestCase):
            self.bad_format_car_choose,
            self.good_format_car_choose         
       ]):
-            result = main.cars()             
+            result = main.cars()   
+             self.assertIn(self.carmenu_message, mock_stdout.getvalue())
              self.assertEqual(mock_stdout.getvalue(), self.bad_format_car_choose_message)       
              self.assertEqual(mock_stdout.getvalue(), self.final_message)       
                    
-                  
-                   
-                   
+    class AddingNewCar((unittest.TestCase):
+    # Test case 30
+    # Add a new car
+    # all inputs are correct
+          def setUp(self):
+           self.maxDiff = None
+           self.carmenu_message = '\n-------Cars menu-------\nList of all cars in a car fleet(1)\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)Add a new car(5)\n'        
+           self.choose_option_carmenu = 5
+           self.good_format_license = '1234ABC'
+           self.good_format_manufacture = 'Opel'
+           self.good_format_name = 'Astra' 
+           self.good_format_year = '2021'
+           self.good_format_energy = 'petrol'
+           self.good_format_car_choose= 3
+           self.final_message = 'Astra- 2021- 1234ABC - petrol- Coupe - availability=1 \nCar has been added'
+                       
+     def test_format_license(self)
+         # license function only good format            
+         with mock.patch('builtins.input', side_effect=[
+            self.good_format_license,
+        ]):                     
+            result = main.get_car_manu()
+            self.assertEqual(result, self.good_name)           
+                       
+       def test_format_manufacture(self):
+        # manufacture function
+        with mock.patch('builtins.input', side_effect=[
+            self.good_format_manufacture,
+        ]):
+            result = main.get_car_manu()
+            self.assertEqual(result, self.good_format_manufacture)    
+                       
+       def test_format_name(self):
+        # name function
+        with mock.patch('builtins.input', side_effect=[
+            self.good_format_name,
+        ]):
+            result = main.get_car_name()
+            self.assertEqual(result, self.good_format_name)                    
+        
+        def test_format_year(self):
+        # year function
+        with mock.patch('builtins.input', side_effect=[
+            self.good_format_year,
+        ]):
+            result = main.get_make_year()
+            self.assertEqual(result, self.good_format_year)                  
 
+        def test_format_energy(self)
+          # type energy function
+         with mock.patch('builtins.input', side_effect=[
+            self.good_format_energy,
+        ]):
+            result = main.get_make_year()
+            self.assertEqual(result, self.good_format_energy)                  
+              
+                       
+                       
+                       
+                       
+                       
+                       
+                       
+                       
+                       
+                       
