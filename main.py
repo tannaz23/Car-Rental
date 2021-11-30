@@ -2,6 +2,10 @@
 import fileinput
 from datetime import datetime
 
+_CUSTOMERS_FILE = 'customers.txt'
+_CARS_FILE = 'cars.txt'
+_ORDERS_FILE = 'orders.txt'
+
 #--ORDER FUNCTION ----------------------------------------------------------------------
 def get_passportid():
     while 1 :
@@ -650,107 +654,195 @@ def cars():
     
     
 # CUSTOMER FUNCTION---------------------------------------------------------------------------------------------------    
-def deleteacustomer():
-    while 1:
-        passportid=input('Enter your Passport id : ')
-        if len(passportid)==9 and passportid[0:7].isnumeric() and passportid[7:8]=='-' and passportid[8:9].isalpha():
-            file3 = open("customers.txt", "r")
-            flag = 0
-            index = 0
-            for line in file3:  
-                index += 1
-                if passportid in line:
-                    flag = 1
-                    break
-            if flag == 0: 
-                print('The customer with that passport_id :', passportid , 'does not exist.')
-                ch4=input("do you want to try again ?")
-                if ch4=="y":
-                    None
-                else :
-                    customers1()
-                    break
-            else:
-                print('', passportid, 'Found In System')
-                with open("customers.txt", "r") as file3:
-                    lines = file3.readlines()
-                    print(lines)
-                #delete user 
-                
-                print("customer deleted...")
-                
-                file3.close()
-                #file3.close()
-                break
-            file3.close()        
-        
-        
+
+def customers_menu():
+    print("------Customer menu------")
+    print("Register new customer(1)")
+    print("List of current customers(2)")
+    print("Search for a customer(3)")
+    print("Go back(4)")
+    selection = -1
+    while selection not in [1,2,3,4]:
+        selection = int(input("Select a valid option to perform\n"))
+        if selection not in [1,2,3,4]:
+            print("Invalid option. Please try again!")
+    if selection == 1:
+        add_new_customer()
+    elif selection == 2: 
+        list_customers()
+    elif selection == 3:
+        search_customer()
+    else:
+        main_menu()
+
+
+def add_new_customer():
+    first_name=str(get_first_name())
+    last_name = str(get_last_name())
+    address=str(get_address())
+    passport_id=str(get_passport_id())
+    credit_card=str(get_credit_card())
+    final_record = f"{first_name};{last_name};{address};{passport_id};{credit_card}"
+    with open(_CUSTOMERS_FILE, 'a') as customers_file:
+        customers_file.write(final_record)
+    print(f"Customer registered successfully: {first_name}, {last_name}, {address}, {passport_id}, {credit_card}.")
+
+def get_first_name():
+    first_name = ''
+    valid = False
+    print("Please, enter your first name:")
+    while not valid:
+        first_name = input()
+        if first_name.isalpha():
+            valid = True
         else:
-            print("Passport number or ID format is SSSSSSS-A, where SSSSSSS is the seven digit serial number and A is the literal, please correct your input")            
-def listcustomers():
-    while 1 :
-        print("-----list of current customers menu------")
-        file1=open("customers.txt",'r')
-        print(file1.read()) 
-        print("Register new customers(1)")
-        print("Delete a customer(2)")
-        print("Go back(3)")
-        ch2=int(input("what do you want ?"))
-        if ch2==1:
-            #customers()
-            first_name=str(get_first_name())
-            last_name = str(get_last_name())
-            address=str(get_address())
-            passportid=str(get_passport_id())
-            credit_card=str(get_credit_card())
-            file1 = open("customers.txt", 'a')
-            file1.write(first_name)
-            file1.write(',')
-            file1.write(last_name)
-            file1.write(',')
-            file1.write(address)
-            file1.write(',')
-            file1.write(passportid)
-            file1.write(',')
-            file1.write(credit_card)
-            file1.write('\n')
-            file1.close()
-            print("Customer registered successfully:","{",first_name,'-----',last_name,'-----',address,'-----',passportid,'-----',credit_card,"}")
-            break
-        elif ch2==2 :
-            deleteacustomer()
-            break
-        elif ch2==3 :
-            print("----back to customer menu...")
-            #goback()                   
-def searchcustomer():
-    while 1:
-        passportid=input('Enter your Passport id : ')
-        if len(passportid)==9 and passportid[0:7].isnumeric() and passportid[7:8]=='-' and passportid[8:9].isalpha():
-            file3 = open("customers.txt", "r")
-            flag = 0
-            index = 0
-            for line in file3:  
-                index += 1
-                if passportid in line:
-                    flag = 1
-                    
+            print("Only letters are allowed, try again")
+    return first_name
+
+def get_last_name():
+    last_name = ''
+    valid = False
+    print("Please, enter your last name:")
+    while not valid:
+        last_name = input()
+        if last_name.isalpha():
+            valid = True
+        else:
+            print("Only letters are allowed, try again")
+    return last_name
+
+def get_address():
+    address = ''
+    print("Please, enter your address:")
+    address = input()
+    if len(address)<30:
+        return address
+    else:
+        return address[0:30]
+
+def get_passport_id():
+    passport_id = ''
+    valid = False
+    print("Please, enter your passport/id:")
+    while not valid:
+        if len(passport_id) == 9 and passport_id[0:7].isnumeric() and passport_id[7:8] == '-' and passport_id[8:9].isalpha():
+            valid = True
+        else:
+            print("Passport number or ID format is SSSSSSS-A, where SSSSSSS is the seven-digit serial number and A is the literal, please correct your input")    
+    return passport_id
+
+def get_credit_card():
+    credit_card = ''
+    valid = False
+    print("Please, enter your credit card:")
+    while not valid:
+        credit_card=input()
+        if len(credit_card) == 16 and credit_card[0:16].isnumeric():
+            valid = True
+        else:
+            print("Expected input for the credit card number is 16 digits without blank spaces, please try again")             
+    return credit_card
+
+def list_customers():
+    print("-----List of current customers------")
+    print("First name; Last name; Address; Passport/id; Credit card")
+    with open(_CUSTOMERS_FILE, 'r') as customers_file:
+        for line in customers_file:
+            line_to_print = line.replace(";", "; ")
+            print(line_to_print, end="")
+    print("-----What to do now?------")
+    print("Register new customers(1)")
+    print("Delete a customer(2)")
+    print("Go back(3)")
+    print("Please, select an option")
+    selection = -1
+    while selection not in [1,2,3]:
+        selection = int(input())
+        print("Invalid option. Please try again!")
+    if selection == 1:
+        add_new_customer()
+    elif selection == 2:
+        delete_customer()
+    else:
+        customers_menu()
+
+def delete_customer():
+    passport_id = ''
+    valid = False
+    found_deleted = False
+    exit = False
+    print("Please, enter your passport/id:")
+    while not valid or not found_deleted:
+        valid = False
+        passport_id = input()
+        if len(passport_id) == 9 and passport_id[0:7].isnumeric() and passport_id[7:8] == '-' and passport_id[8:9].isalpha():
+            valid = True
+            found_deleted = find_delete_customer(passport_id)
+            if not found_deleted:
+                print(f"The customer with that passport {passport_id} does not exist, do you want to try again ? (y/n)")
+                response = input().upper()
+                if response != 'Y':
+                    exit = True
                     break
-            if flag == 0: 
-                print('The customer with that passport_id :', passportid , 'does not exist.')
-                ch4=input("do you want to try again ?")
-                if ch4=="y":
-                    None
-                else :
-                    customers1()
-                    break
+        else:
+            print("Passport number or ID format is SSSSSSS-A, where SSSSSSS is the seven-digit serial number and A is the literal, please correct your input")
+    if exit:
+        customers_menu()
+
+def find_delete_customer(passport_id):
+    deleted = False
+    with open(_CUSTOMERS_FILE, "r") as customers_file:
+        lines = customers_file.readlines()
+
+    with open(_CUSTOMERS_FILE, "w") as customers_file:
+        for line in lines:
+            if passport_id in line:
+                deleted = True
             else:
-                print('', passportid, 'Found In System')
-                file=open('customers.txt')
-                lines=file.readlines()
-                print(lines[(index-1)])
-                file.close()
-                break 
+                customers_file.write(line)
+
+    return deleted
+
+def search_customer():
+    passport_id = ''
+    valid = False
+    found = False
+    exit = False
+    print("Please, enter your passport/id:")
+    while not valid or not found:
+        valid = False
+        passport_id = input()
+        if len(passport_id) == 9 and passport_id[0:7].isnumeric() and passport_id[7:8] == '-' and passport_id[8:9].isalpha():
+            valid = True
+            found = find_diplay_customer(passport_id)
+            if not found:
+                print(f"The customer with that passport {passport_id} does not exist, do you want to try again ? (y/n)")
+                response = input().upper()
+                if response != 'Y':
+                    exit = True
+                    break
+        else:
+            print("Passport number or ID format is SSSSSSS-A, where SSSSSSS is the seven-digit serial number and A is the literal, please correct your input")
+    if exit:
+        customers_menu()
+
+def find_diplay_customer(passport_id):
+    found = False
+    with open(_CUSTOMERS_FILE, "r") as customers_file:
+        lines = customers_file.readlines()
+
+    for line in lines:
+        if passport_id in line:
+            found = True
+            data = line.split(";")
+            print(f"Customer found: {data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}")
+
+    return found         
+
+# MAIN MENU FUNCTION---------------------------------------------------------------------------------------------------    
+
+# TODO fix this, drop customer menu and use function like the others
+# TODO also check the option nº 4 and 5 not implemented
 def main_menu():
     while 1 :
         print("-------Main Menu-------")
@@ -794,57 +886,7 @@ def main_menu():
                 None    
             else:
                 print("-------Invalid option. Please try again!-----------")
-def customers1():
-    first_name=str(get_first_name())
-    last_name = str(get_last_name())
-    address=str(get_address())
-    passportid=str(get_passport_id())
-    credit_card=str(get_credit_card())
-def get_first_name():
-    while 1 :
-        first_name=input("enter your first name: ")
-        if first_name.isalpha():
-            return first_name
-            break
-        else:
-            print("Only letters are allowed, try again")
-def get_last_name():
-    while 1 :
-        last_name=input("enter your last name : ")
-        if last_name.isalpha():
-            return last_name
-            break
-        else:
-            print("Only letters are allowed, try again")                
-def get_address():
-    while 1:
-        address=input("enter your address: ")
-        if len(address)<30:
-            return address
-            break
-        else:
-            address = address[0:30]
-            return address
-            break            
-def get_passport_id():
-    while 1 :
-        passportid=input('Enter your Passport id : ')
-        if len(passportid)==9 and passportid[0:7].isnumeric() and passportid[7:8]=='-' and passportid[8:9].isalpha():
-            return passportid
-            break
-        else:
-            print("Passport number or ID format is SSSSSSS-A, where SSSSSSS is the seven digit serial number and A is the literal,please correct your input")              
-def get_credit_card():
-    while 1:
-        credit_card=input("enter your credit card : ")
-        if len(credit_card)==16 and credit_card[0:16].isnumeric():
-            return credit_card
-            break
-        else:
-            print(credit_card)
-            print("Expected input for the credit card number is 16 digits without blankspaces, please try again")             
-                
-                
+          
                 
 #---------------------------------------------------------------------------------------------------------------------   
 
@@ -917,14 +959,3 @@ while 1 :
         print("-------Invalid option. Please try again!-----------")
 '''
 #-----------------------------------------------------------------------------
-                                    
-
-
-def test_mock():
-    ch=str(input("what do you want ?"))
-    hc=str(input("what's up?"))
-    if ch == 'yes' and hc == 'yes':
-        return 'yes'
-    else:
-        return 'no'
-                                    
