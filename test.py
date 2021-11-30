@@ -611,19 +611,19 @@ class AddingNewCar((unittest.TestCase):
            self.bad_format_license_message = 'License number is of incorrect format, try again\n
            self.good_format_license = '1234ABC'
            self.bad_format_manufacture = '1A'
-           self.bad_format_manufacture_message = 'Invalid format, try again\n' 
+           self.bad_format_manufacture_message = 'Invalid format, try again!\n' 
            self.good_format_manufacture = 'Opel'
            self.bad_format_name = '2A'
-           self.bad_format_name_message = 'Invalid format, try again\n'  
+           self.bad_format_name_message = 'Invalid format, try again!\n'  
            self.good_format_name = 'Astra'
            self.bad_format_year = '20222A'        
-           self.bad_format_year_message = 'Invalid format, try again\n'  
+           self.bad_format_year_message = 'Invalid format, try again!\n'  
            self.good_format_year = '2021'
            self.bad_format_energy = 'petrolll'
-           self.bad_format_energy_message = 'Invalid format, try again\n'
+           self.bad_format_energy_message = 'Invalid format, try again!\n'
            self.good_format_energy = 'petrol'
            self.bad_format_car_choose = 6
-           self.bad_format_car_choose_message = 'Invalid format, try again\n'
+           self.bad_format_car_choose_message = 'Invalid format, try again!\n'
            self.good_format_car_choose= 4
            self.final_message = 'Astra- 2021- 1234ABC - petrol- SUV- availability= \nCar has been added' 
   
