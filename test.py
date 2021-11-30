@@ -600,8 +600,13 @@ class CarAvailableList(unittest.TestCase):
             self.assertIn(self.finfing_infromation_message, mock_stdout.getvalue())
             self.assertIn(self.option_message_second , mock_stdout.getvalue())
                        
-
-                       
+class AddingNewCar((unittest.TestCase):
+    # Test case 29
+    # Add a new car
+    # fail all inputs at first and then input correct one
+          def setUp(self):
+           self.carmenu_message = '\n-------Cars menu-------\nList of all cars in a car fleet(1)\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)Add a new car(5)\n'        
+                
                        
                        
                        
