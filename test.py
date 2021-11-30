@@ -337,23 +337,8 @@ class CustomerSearchAndBack(unittest.TestCase):
         ]):
             main.searchcustomer()
             self.assertIn(self.bad_message, mock_stdout.getvalue())
-            
- class CarShowList(unittes.TestCase):
-    # Test case 20
-    # Test cases for list of all car fleet
-    # Car finding and go back to car menu
-    def setUp(self):
-        self.maxDiff = None
-        self.list_menu= 'List of all cars in a car fleet(1)\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)\n'
-        self.selected_option = 1
+           
         
-    @unittest.expectedFailure
-    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-    def test_list_car_go_back(self)   
-    
-  
-
-
 def customerTestCases():
     # Test suite for customer functionality
     suite = unittest.TestSuite()
@@ -361,3 +346,52 @@ def customerTestCases():
 
 if __name__ == '__main__':
   unittest.TextTestRunner(verbosity=2).run(suite())
+
+
+
+
+class CarShowList(unittes.TestCase):
+    # Test case 20
+    # Test cases for list of all car fleet
+    # and then go back to car menu
+    def setUp(self):
+        self.maxDiff = None
+        self.list_carmenu = 'List of all cars in a car fleet\n'
+        self.car_menu = '------Car menu------\nList of all cars in a car fleet\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)\n'
+        self.selected_option = 1
+        self.selected_option_second = 2
+        
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_list_car_go_back(self,moch_stdout):
+        with moch.patch('builtins.input', side_effect=[
+            self.selected_option
+            self.selected_option_second
+        ]):
+            main.cars()
+            self.assertIn(self.list_carmenu, mock_stdout.getvalue())
+            self.assertIn(self.car_menu, mock_stdout.getvalue())
+
+            
+            
+class CarShowListSearch(unittest.TestCase):
+    # Test case 21
+    # Test case for list of all cars in a car fleet and successfully search one car
+    # Car finds and then go back to car menu
+    # option 2 is for selecting going back on selecting specific car section
+    def setUp(self):
+        self.maxDiff = None
+        self.list_carmenu = 'List of all cars in a car fleet\n'
+        self.car_menu = '------Car menu------\nList of all cars in a car fleet\nList of unavailable cars(2)\nList of available cars(3)\nSearch for a specific car(4)\n'
+        self.selected_option = 1
+        self.selected_option_second = 2
+        
+        
+    
+    
+      
+
+
+
+
+
