@@ -537,7 +537,7 @@ class CarAvailableList(unittest.TestCase):
     # Test case 27
     # Search for specific car, with all correct information (not found at first but then found)
     # move to unavailable and go back to menu with pressign g (not Y or N)
-         def setUp(self):
+       def setUp(self):
         self.maxDiff = None
         self.licensenum_message = '\nEnter license number :'
         self.bad_license = '1234BBB'                    
@@ -570,6 +570,42 @@ class CarAvailableList(unittest.TestCase):
              self.assertIn(self.option_message_second , mock_stdout.getvalue())          
              self.assertIn(self.assign_success_message , mock_stdout.getvalue())          
                       
-                      
-      
+  class CarSearchwrong((unittest.TestCase):
+    # Test case 28
+    # Search for specific car with incorrect format
+    # Then input a correct one and return to menu
+           def setUp(self):
+        self.maxDiff = None
+        self.licensenum_message = '\nEnter license number :'
+        self.bad_license = 'AA123456'                    
+        self.error_license_message = 'Invalid license number format, Try again\n' 
+        self.good_license = '1234ABC'
+        self.fining_license_message = '\n1234ABC found in system\n '
+        self.finfing_infromation_message = '\nName,Manufacturer,Year made,License number, Type of energy, category,Availavility'
+        self.option_message_second = '\nOption\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars\nGo back(3)'
+        self.select_option = 3
+  
+  @unittest.expectedFailure
+  @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+     def test_search_car_wrong_format(self, mock_stdout):
+        with mock.patch('builtins.input', side_effect=[   
+          self.bad_license,
+          self.good_license,
+          self.select_option
+      ]):
+            main.searchcar()
+            self.assertIn(self.licensenum_message, mock_stdout.getvalue())
+            self.assertIn(self.error_license_message, mock_stdout.getvalue())
+            self.assertIn(self.fining_license_message, mock_stdout.getvalue())
+            self.assertIn(self.finfing_infromation_message, mock_stdout.getvalue())
+            self.assertIn(self.option_message_second , mock_stdout.getvalue())
+                       
+
+                       
+                       
+                       
+                       
+                       
+                       
+                       
 
