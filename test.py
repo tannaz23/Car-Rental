@@ -517,23 +517,22 @@ class CarAvailableList(unittest.TestCase):
         self.fining_license_message = '\n1234ABC found in system\n '
         self.finfing_infromation_message = '\nName,Manufacturer,Year made,License number, Type of energy, category,Availavility'
         self.option_message = '\nOption\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars\nGo back(3)'
-                  
-        
-
-   
-                  
-                  
+        self.select_option = 2
+        self.assign_success_message = '\nCar successfully moved from available to unavailable'
+              
     @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)      
-     
+     def test_search_car_success(self, mock_stdout):
+        # car search and siign
+        with mock.patch('builtins.input', side_effect=[
+            self.good_license,
+            self.select_option  
+        ]):
+            main.searchcar()
+            self.assertIn(self.licensenum_message, mock_stdout.getvalue())
+            self.assertIn(self.fining_license_message, mock_stdout.getvalue())
+            self.assertIn(self.option_message, mock_stdout.getvalue())
+            self.assertIn(self.assign_success_message, mock_stdout.getvalue())
                   
-                  
-                  
-                  main.searchcar()
-                  
-        
-    
-    
-    
       
 
