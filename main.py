@@ -245,6 +245,25 @@ def delete_order():
                 file.write(data)
             print("Order with the id of "+ orderid +" has been successfully deleted")
             break
+            
+def print_order_list():
+  #  file = open('orders.txt', 'r')
+  #   print(file.read())
+    with open(_ORDERS_FILE, 'r') as order_file:
+        for line in order_file:
+            line_to_print = line.replace(";", "; ")
+            print(line_to_print, end="")
+    print("-------OPTIONS-------")
+    print("Search for a specific order(1)")
+    print("Go back(2)")
+    selection = -1
+    while selection not in [1,2]:
+        selection = int(input())
+        print("Invalid option. please try again")
+    if selection == 1:
+        search_order()
+    else:
+        orders() 
 def search_order():
     orderid = ''
     valid = False
