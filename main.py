@@ -356,7 +356,8 @@ def get_make_year():
         pass
     else:
         print("Invalid format, try again!")
-        get_make_year()                
+        get_make_year()  
+
 def get_car_type_energy():
     car_type_energy = input("Type of energy (Petrol, Diesel, Metan or Electric) type in the name----")
     if 'petrol' or 'Petrol' or 'Diesel' or 'Metan' or 'Electric' or 'electric' or 'metan' or 'diesel' in car_type_energy:
@@ -498,7 +499,31 @@ def searcher_with_input():
             print()    
     except :
         print("\nThe file doesn't exist!")
-def searcher_without_input_for_unavailable():
+
+def searchcar():
+    get_license_number()   
+
+def list_all_cars():
+    print("---------list of all cars---------")
+    with open('cars.txt','r') as cars_file:
+        for line in cars_file:
+            line_to_print = line.replace(";", ";")
+            print(line_to_print, end="")
+    print ("---------OPTIONS---------")
+    print ("Search for a specific car(1)")
+    print ("Go back(2)")
+    selection = -1
+    while selection not in [1,2]:
+        selection = int(input())
+        print("Invalid option. please try again")
+        if selection == 1:
+            searchcar()
+        elif selection ==  2:
+            cars()  
+    # in the specification it didn't said to show message or to do anything if user input another number.
+
+def list_all_available_cars():
+    print("------list of all cars unavailable------")
     try:
         file_read = open('cars.txt', "r")
         text = '(1)'
@@ -520,8 +545,20 @@ def searcher_without_input_for_unavailable():
             print()    
     except :
         print("\nThe file doesn't exist!")
-def searcher_without_input_for_available():
-    try:
+    print("--------OPTIONS--------")
+    print("Search for a specific car(1)")
+    print("Go back(2)")
+    while selection not in [1,2]:
+        selection = int(input())
+        print("Invalid option. please try again")
+        if selection == 1:
+            searchcar()
+        elif selection ==  2:
+            cars()  
+
+def list_all_unavailable_cars():
+   print("------list of all cars available------")
+   try:
         file_read = open('cars.txt', "r")
         text = '(0)'
         lines = file_read.readlines()
@@ -539,11 +576,21 @@ def searcher_without_input_for_available():
             print("\n**** List of available cars  ****\n")
             for i in range(lineLen):
                 print(end=new_list[i])
-            print()    
-    except :
+            print()  
+   except:   
         print("\nThe file doesn't exist!")
-def searchcar():
-    get_license_number()                          
+
+   print("--------OPTIONS--------")
+   print("Search for a specific car(1)")
+   print("Go back(2)")
+   while selection not in [1,2]:
+        selection = int(input())
+        print("Invalid option. please try again")
+        if selection == 1:
+            searchcar()
+        elif selection ==  2:
+            cars()  
+   
 def cars():
     print("-------Cars menu-------")
     print("List of all cars in a car fleet(1)")
@@ -552,56 +599,21 @@ def cars():
     print("Search for a specific car(4)")
     print("Add new car(5)")
     print("Go back(6)")
-    ch5= input("what option do you want ?---")
-    if ch5 =='1':
-        print("---------list of all cars---------")
-        file = open('cars.txt','r')
-        all_cars = file.read()
-        print(all_cars)
-        file.close()
-        print("---------OPTIONS---------")
-        print("Search for a specific car(1)")
-        print("Go back(2)")
-        
-        ch6=input("what option do you want?---")
-        if ch6 =='1':
-            searchcar()
-        elif ch6==2:
-            cars() 
-            
-               
-    elif ch5=='2':
-        print("------list of all cars unavailable------")
-        searcher_without_input_for_unavailable()
-        
-        
-        
-        print("--------OPTIONS--------")
-        print("Search for a specific car(1)")
-        print("Go back(2)")
-        ch7=input("what option do you want?---")
-        if ch7 =='1':
-            searchcar()
-        elif ch7=='2':
-            cars()
-            
-            
-    elif ch5 =='3':
-        print("------list of all cars available------")
-        searcher_without_input_for_available()
-        print("Search for a specific car(1)")
-        print("Go back(2)")
-        ch8=input("what option do you want?---")
-        if ch8 =='1':
-            searchcar()
-        elif ch8=='2':
-            cars()
-            
-            
-    elif ch5=='4':
+    selection = -1
+    while selection not in [1,2,3,4,5,6]:
+           selection = int(input("Select a valid option to perform\n"))
+           if selection not in [1,2,3,4,5,6]:
+               print("Invalid option. Please try again!")
+    if selection == 1:
+        list_all_cars()
+    elif selection == 2:
+        list_all_available_cars()
+    elif selection == 3:
+        list_all_unavailable_cars()
+    elif selection == 4:
         searchcar()
-    elif ch5=='5':
-        license_plate =get_license_plate()
+    elif selection == 5:
+        license_plate = get_license_plate()
         car_manu = get_car_manu()
         car_name = get_car_name()
         car_make_year = get_make_year()
@@ -646,10 +658,9 @@ def cars():
         file4.close()
         print("-----Car has been added!-------")
         
-    elif ch5=='6':
-        main_menu()
-    else:
-        print("-------Invalid option. Please try again!-----------")        
+   # elif ch5=='6':
+        main_menu() 
+        
 #--------------------------------------------------------------------------------------------    
     
     
