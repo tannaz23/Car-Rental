@@ -214,38 +214,41 @@ def register_order():
         else:
             None        
 def delete_order():
-    while 1: 
-        file_read = open('orders.txt', "r")
-        orderid = input("enter order id --- ")
-        orderid = '-'+orderid+'-'
-        lines = file_read.readlines()
-        new_list = []
-        idx = 0
+    orderid = ''
+    valid = False
+    found_deleted = False
+    exist = False
+    print("Please, enter order id:")
+    while not valid or not found_deleted:
+        valid = False
+        orderid = input()
+        if orderid.isnumeric()
+            valid = True
+            found_deleted = find_delete_order(orderid)
+            if not found_deleted:
+                print(f"The order id does not exist, do you want to try again?(Y/N)")
+                response= input().upper
+                if response != 'Y':
+                  exist=True
+                  break
+        else:
+            print("order id format is wrong,try again!")
+    if exit:
+        orders()
+
+def find_delete_order(orderid):
+    deleted = False
+    with open(_ORDERS_FILE, "r") as orders_file:
+        lines = order_file.readlines()
+
+    with open(_CUSTOMERS_FILE, "w") as customers_file:
         for line in lines:
             if orderid in line:
-                new_list.insert(idx, line)
-                idx += 1
-        file_read.close()
-        if len(new_list)==0:
-            ch24=input("Order id "+orderid +"does not exist, do you want to try again ? (y/n)")
-            if ch24=='y' or ch24=='Y':
-                delete_order()
+                deleted = True
             else:
-                break    
-        else:
-            lineLen = len(new_list)
-            for i in range(lineLen):
-                a = end=new_list[i]
-            search_text = str(a)
-            replace_text = ""
-            with open(r'orders.txt', 'r') as file:
-                data = file.read()
-                data = data.replace(search_text, replace_text)
-            with open(r'orders.txt', 'w') as file:
-                file.write(data)
-            print("Order with the id of "+ orderid +" has been successfully deleted")
-            break
-            
+                order_file.write(line)
+    return deleted
+
 def print_order_list():
   #  file = open('orders.txt', 'r')
   #   print(file.read())
