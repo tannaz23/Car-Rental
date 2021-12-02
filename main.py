@@ -8,69 +8,66 @@ _ORDERS_FILE = 'orders.txt'
 
 #--ORDER FUNCTION ----------------------------------------------------------------------
 def get_passportid():
-    while 1 :
-        passportid = input("Enter your passport number ---")
-        if len(passportid)==9 and passportid[0:7].isnumeric() and passportid[7:8]=='-' and passportid[8:9].isalpha():
-            return passportid
-            break
-        else:
-            print("Passport number is incorrect, try again!") 
-def searchcustomer():
-    while 1:
-        passportid=input('Enter your Passport id : ')
-        if len(passportid)==9 and passportid[0:7].isnumeric() and passportid[7:8]=='-' and passportid[8:9].isalpha():
-            file3 = open("customers.txt", "r")
-            flag = 0
-            index = 0
-            for line in file3:  
-                index += 1
-                if passportid in line:
-                    flag = 1
-                    
-                    break
-            if flag == 0: 
-                print('The customer with that passport_id :', passportid , 'does not exist.')
-                ch4=input("do you want to try again ?")
-                if ch4=="y" or ch4=='Y':
-                    None
-                else :
-                    customers1()
+    passport_id = ''
+    valid = False
+    print("Please, enter a passport/id")
+    while not valid:
+        valid = False
+        passport_id = input()
+        if len(passport_id)==9 and passport_id[0:7].isnumeric() and passport_id[7:8]=='-' and passportid[8:9].isalpha():
+            valid = True
+            if not searchcustomer(passport_id):
+                print("User does not exist, do you want to try again ? (y/n)")
+                response = input().upper()
+                if response != 'Y':
+                    go_back = True
                     break
             else:
-                print('Customer found!')
-                file=open('customers.txt')
-                lines=file.readlines()
-                print(lines[(index-1)])
-                file.close()
-                break  
+                print("Customer found!")
+            break
+        else:
+            print("Passport number is incorrect, try again!")
+
+    if go_back:
+        main_menu()
+
+    return passport_id 
+
+def searchcustomer(passport_id):
+    found = False
+    with open(_CUSTOMERS_FILE,"r") as customers_file:
+        lines = customers_file.readlines()
+    for line in lines:
+        if passport_id in line:
+            found = True
+
+    return found
+
 def pickup_date():
-    while 1 :
-        pickup_date = input("Pick up date (DD/MM/YYYY)")
-        format = "%d/%m/%Y"
-        res = True    
-        try:
-            res = bool(datetime.strptime(pickup_date, format))
-        except ValueError:
-            res = False
-        if str(res)=='True':
-            return pickup_date
-            break
+    pickup_date = ''
+    valid = False
+    print("Pick up date (DD/MM/YYYY)")
+    while not valid:
+        pickup_date = input()
+        if pickup_date[0:2].isnumeric() and pickup_date [2:3] == '/' and pickup_date[3:5].isnumeric() and pickup_date[5:6] == '/' and pickup_date[6:10].isnumeric():
+            valid = True
         else:
-            print("Incorrect date format, try again!")  
+            print("Incorrect date format, try again!")
+    return pickup_date
+
 def return_date():
-    while 1 :
-        return_date = input("Return date (DD/MM/YYYY)")
-        format = "%d/%m/%Y"
-        res = True    
-        try:
-            res = bool(datetime.strptime(return_date, format))
-        except ValueError:
-            res = False
-        if str(res)=='True':
-            return return_date
-            break
+    return_date = ''
+    valid = False
+    print("Return date (DD/MM/YYYY)")
+    while not valid:
+        return_date = input()
+        if return_date[0:2].isnumeric() and return_date [2:3] == '/' and return_date[3:5].isnumeric() and return_date[5:6] == '/' and return_date[6:10].isnumeric():
+            valid = True
         else:
-            print("Incorrect date format, try again!")        
+            print("Incorrect date format, try again!")
+    return return_date
+
+
 def price_table():
     print("--------------------------------------")
     print("Car type ","|----------|", "Price     ")
@@ -82,143 +79,84 @@ def price_table():
     print("-------")
     print("Please note the daily rate is based on 100 driven kilometers per day on average over the rental period. The fee for driving more than 100 km is based on 1% of the daily fare for each kilometer over 100km.")
 
-def check_unavailable():
-    try:
-        file_read = open(_CARS_FILE, "r")
-        text = '(1)'
-        lines = file_read.readlines()
-        new_list = []
-        idx = 0
-        for line in lines: 
-            if text in line:
-                new_list.insert(idx, line)
-                idx += 1
-        file_read.close()
-        if len(new_list)==0:
-            #print("\n\**** car is available ! ****")
-            None
-        else:
-            lineLen = len(new_list)
-            print("\n**** car is unavailable  ****\n")
-            for i in range(lineLen):
-                print(end=new_list[i])
-            #print()    
-    except :
-        print("\nThe file doesn't exist!")
+
 def order_id():
-    file = open("orders.txt","r")
-    Counter = 0   
-    Content = file.read()
-    CoList = Content.split("\n")
-    for i in CoList:
-        if i:
-            Counter += 1
-    Counter = Counter + 1
-    return Counter  
-def car_type_choose():
-    while 1 :
-        print("-----Car types-----")
-        print("Hatchback (1)")
-        print("Sedan (2)")
-        print("Coupe (3)")
-        print("SUV (4)")
-        ch21=input("What option do you want ?--")
-        if ch21=='1' or ch21=='h' or ch21=='H':
-            car_type = "Hatchback"
-            a = check_unavailable()
-            if a == True:
-                ch22=input("Car of type ",car_type," is unavailable, Do you want to pick another type (y/n)")
-                if ch22=="y" or ch22=="Y":
-                    None
-                else :
-                    orders()
-                    break
-            else :
-                print("Order registered !")
-                return car_type
-                break 
-        elif ch21=='2' or ch21=='s' or ch21=='S':
-            car_type = "Sedan"
-            a = check_unavailable()
-            if a == True:
-                ch22=input("Car of type ",car_type," is unavailable, Do you want to pick another type (y/n)")
-                if ch22=="y" or ch22=="Y":
-                    None
-                else :
-                    orders()
-                    break
-            else :
-                print("Order registered !")
-                return car_type
-                break
-        elif ch21=='3' or ch21=='c' or ch21=='C':
-            car_type = "Coupe"
-            a = check_unavailable()
-            if a == True:
-                ch22=input("Car of type ",car_type," is unavailable, Do you want to pick another type (y/n)")
-                if ch22=="y" or ch22=="Y":
-                    None
-                else :
-                    orders()
-                    break
-            else :
-                print("Order registered !")
-                return car_type
-                break
-        elif ch21=='4' or ch21=='s' or ch21=='S':
-            car_type = "SUV"
-            a = check_unavailable()
-            if a == True:
-                ch22=input("Car of type ",car_type," is unavailable, Do you want to pick another type (y/n)")
-                if ch22=="y" or ch22=="Y":
-                    None
-                else :
-                    orders()
-                    break
-            else :
-                print("Order registered !")
-                return car_type
-                break   
+    with open(_CARS_FILE, "r") as cars_file:
+        lines = cars_file.readlines()
+    count = 0 
+    if len(lines) == 0:
+        return 1
+    else:
+        return lines[len(lines)-1].split(";")[0]  
+
+def car_type_choice():
+    car_type_choice = ''
+    car_license = ''
+    price_table()
+    print("-----Car types-----")
+    print("Hatchback (1)")
+    print("Sedan (2)")
+    print("Coupe (3)")
+    print("SUV (4)")
+    print("Please, select one car type")
+    selection = '-1'
+    go_back = False
+    while selection not in ['1','2','3','4']:
+        selection = input()
+        if selection not in ['1','2','3','4']:
+            print("Invalid option. Please try again")
         else:
-            print("Invalid option. Please try again!")          
+            if selection == '1':
+                car_type_choice = 'Hatchback'.upper()
+            elif selection == '2':
+                car_type_choice = 'Sedan'.upper()
+            elif selection == '3':
+                car_type_choice = 'Coupe'.upper()
+            else: 
+                car_type_choice = 'SUV'.upper()
+            availability, car_license = check_type_available(car_type_choice)
+            if not availability:
+                print(f"Car of type {car_type_choice} is unavailable, Do you want to pick another type (y/n)")
+                response = input().upper()
+                if response != 'Y':
+                    go_back = True
+                    break
+                else:
+                    selection = '-1'
+            else:
+                assign_avalilability(car_license, "(1)")
+        
+    if go_back:
+        orders()
+    
+    return car_type_choice, car_license
+
+def get_car_price(car_type):
+    if car_type == 'SUV':
+        return '15000'
+    elif car_type == 'HATCHBACK':
+        return '7000'
+    elif car_type == 'SEDAN':
+        return '12000'
+    else:
+        return '10000'
+
 def register_order():
-    while 1:
-        counter =str(order_id())
-        searchcustomer()
-        pickupdate = pickup_date()
-        returndate = return_date()
-        price_table()
-        car_type = car_type_choose()
-        if car_type =='Hatchback':
-            car_price = '7 000 EUR'
-        elif car_type =='Sedan':
-            car_price = '12 000 EUR'
-        elif car_type =='Coupe':
-            car_price = '10 000 EUR'
-        elif car_type =='SUV':
-            car_price = '15 000 EUR'
-        file1 = open("orders.txt", 'a')
-        file1.write('-'+counter+'-')
-        file1.write(',')
-        file1.write(pickupdate)
-        file1.write(',')
-        file1.write(returndate)
-        file1.write(',')
-        file1.write(car_type)
-        file1.write(',')
-        file1.write(car_price)
-        file1.write('\n')
-        file1.close()
-        ch23=input("done?! (y/n)")
-        if ch23=='y' or ch23=="Y" :
-            break
-        else:
-            None        
+    passport_id = get_passportid()
+    pickupdate = pickup_date()
+    returndate = return_date()
+    car_type, car_license = car_type_choice()
+    total_price = get_car_price(car_type)
+    final_record = f"{order_id()}; {passport_id}; {pickupdate}; {returndate}; {car_type}; {car_license}; {total_price}"
+    with open(_ORDERS_FILE, 'a') as order_file:
+        order_file.write(final_record)
+    print("Order registered!")
+      
 def delete_order():
     orderid = ''
     valid = False
     found_deleted = False
-    exist = False
+    go_back = False
     print("Please, enter order id:")
     while not valid or not found_deleted:
         valid = False
@@ -228,13 +166,15 @@ def delete_order():
             found_deleted = find_delete_order(orderid)
             if not found_deleted:
                 print(f"The order id does not exist, do you want to try again?(Y/N)")
-                response= input().upper
+                response = input().upper
                 if response != 'Y':
-                  exist=True
+                  go_back = True
                   break
+            else:
+                go_back = True 
         else:
-            print("order id format is wrong,try again!")
-    if exit:
+            print("Invalid order id format! Try again")
+    if go_back:
         orders()
 
 def find_delete_order(orderid):
@@ -242,17 +182,19 @@ def find_delete_order(orderid):
     with open(_ORDERS_FILE, "r") as orders_file:
         lines = order_file.readlines()
 
-    with open(_CUSTOMERS_FILE, "w") as customers_file:
+    with open(_ORDERS_FILE, "w") as orders_file:
         for line in lines:
             if orderid in line:
                 deleted = True
+                line_data = line.split(";")
+                license_plate = line_data[5].strip()
+                assign_avalilability(license_plate, "(0)")
+                print(f"Order with the id of {orderid} has been successfully deleted")
             else:
                 order_file.write(line)
     return deleted
 
 def print_order_list():
-  #  file = open('orders.txt', 'r')
-  #   print(file.read())
     with open(_ORDERS_FILE, 'r') as order_file:
         for line in order_file:
             line_to_print = line.replace(";", "; ")
@@ -268,38 +210,54 @@ def print_order_list():
         search_order()
     else:
         orders() 
+
 def search_order():
     orderid = ''
     valid = False
     found = False
-    exit = False
-    print("please, enter order id")
+    go_back = False
+    print("Please, enter order id")
     while not valid or not found:
         valid = False
         orderid = input()
         if orderid.isnumeric():
             valid = True
-            found= find_order()
+            found = find_order(orderid)
             if not found:
-                print("Order id"+orderid+"does not exist, do you want to try again?(Y/N)")
+                print(f"Order id {orderid} does not exist, do you want to try again?(Y/N)")
                 response = input().upper()
-                if response != Y:
-                    exit=True
+                if response != 'Y':
+                    go_back = True
                     break
+            else:
+                print("-------OPTIONS-------")
+                print("Delete the order(1)")
+                print("Go back(2)")
+                selection = '-1'
+                while selection not in ['1','2']:
+                    selection = input()
+                    print("Invalid option. please try again")
+                if selection == '1':
+                    delete_order()
+                else:
+                    orders() 
         else:
             print("Invalid order id format! Try again")
-    if exit:
+    
+    if go_back:
         orders()
         
-def find_order():
+def find_order(orderid):
     found = False
     with open(_ORDERS_FILE,"r") as order_file:
-        lines = order_file.readline()
+        lines = order_file.readlines()
     for line in lines:
         if orderid in line:
             found = True
             data = line.split(";")
-            print(f"Order found:{data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}, {data[5]}")
+            print("Order found!")
+            print("Order ID, Passport number, Pick-up date, Return date, Type of car, Car license, Total price")
+            print(f"{data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}, {data[5]}")
     return found
     
     
@@ -328,7 +286,6 @@ def orders():
 #-----------------------------------------------------------------------------------------            
             
             
-            
                       
 #--CAR FUNCTION -----------------------------------------------------------------------        
 
@@ -355,6 +312,33 @@ def check_if_license_exist(license_plate):
     
     return False
 
+def check_type_available(car_type):
+    with open(_CARS_FILE, "r") as cars_file:
+        lines = cars_file.readlines()
+
+    for line in lines:
+        if car_type in line and '(0)' in line:
+            car_data = split(';')
+            return True, car_data[3].upper()
+    
+    return False, ''
+
+def assign_avalilability(license_number, availability):
+    with open(_CARS_FILE, "r") as cars_file:
+        lines = cars_file.readlines()
+
+    with open(_CARS_FILE, "w") as cars_file:
+        for line in lines:
+            if license_number in line:
+                if not availability in line:
+                    if availability == '(0)':
+                        line = line.replace('(1)', '(0)')
+                    else:
+                        line = line.replace('(0)', '(1)')
+                    cars_file.write(line)
+            else:
+                cars_file.write(line)
+
 def get_license_plate():
     license_plate = ''
     valid = False
@@ -368,7 +352,7 @@ def get_license_plate():
                 print("A car with this license number is already registered in the system")
         else:
             print("License number is of incorrect format, try again")
-    return license_plate
+    return license_plate.upper()
                    
 def get_car_name():
     car_name = ''
@@ -381,7 +365,7 @@ def get_car_name():
         else :
             print("Invalid format, try again!")
     
-    return car_name
+    return car_name.upper()
 
 def get_car_manu():
     manufacturer = ''
@@ -394,7 +378,7 @@ def get_car_manu():
                 valid = True
         else:
             print("Invalid format, try again!")    
-    return manufacturer
+    return manufacturer.upper()
 
 def get_make_year():
     car_make_year = ''
@@ -406,7 +390,7 @@ def get_make_year():
             valid = True
         else:
             print("Invalid format, try again!")
-    return car_make_year
+    return car_make_year.upper()
 
 def get_car_type_energy():
     car_type_energy = ''
@@ -419,7 +403,7 @@ def get_car_type_energy():
             valid = True
         else:
             print("Wrong type of fuel, try again!")
-    return car_type_energy
+    return car_type_energy.upper()
 
 def get_car_type():
     car_type = ''
@@ -435,16 +419,16 @@ def get_car_type():
         if car_type not in ['1', '2', '3', '4']:
             rint("Invalid type , try again!")
     if car_type == '1':
-        return 'Hatchback'
+        return 'Hatchback'.upper()
     elif car_type == '2':
-        return 'Sedan'
+        return 'Sedan'.upper()
     elif car_type == '3':
-        return 'Coupe'
+        return 'Coupe'.upper()
     else:
-        return 'SUV'
+        return 'SUV'.upper()
                                         
-def assign_avalilability(license_number, availability):
-    exit = False
+def assign_avalilability_from_cars(license_number, availability):
+    go_back = False
     with open(_CARS_FILE, "r") as cars_file:
         lines = cars_file.readlines()
 
@@ -456,7 +440,7 @@ def assign_avalilability(license_number, availability):
                         print("Car already on the list of available cars")
                     else:
                         print("Car already on the list of unavailable cars")
-                    exit = True
+                    go_back = True
                 else:
                     if availability == '(0)':
                         line = line.replace('(1)', '(0)')
@@ -468,7 +452,7 @@ def assign_avalilability(license_number, availability):
             else:
                 cars_file.write(line)
 
-    if exit:
+    if go_back:
         assign_avalilability_menu(license_number)   
 
 def assign_avalilability_menu(license_number):
@@ -483,9 +467,9 @@ def assign_avalilability_menu(license_number):
         if selection not in ['1','2','3']:
             print("Invalid option. Please try again!")
     if selection == '1':
-        assign_avalilability(license_number, '(0)')
+        assign_avalilability_from_cars(license_number, '(0)')
     elif selection == '2':
-        assign_avalilability(license_number, '(1)')
+        assign_avalilability_from_cars(license_number, '(1)')
     else:
         cars()
 
@@ -494,7 +478,7 @@ def get_license_number():
     license_number = ''
     valid = False
     found = False
-    exit = False
+    go_back = False
     while not valid or not found:
         valid = False
         license_number = input()
@@ -514,7 +498,7 @@ def get_license_number():
                 print(f'License_number {license_number} does not exist, do you want to try again ? (Y/y)')
                 ch10=input().upper()
                 if ch10 !='Y':
-                    exit = True
+                    go_back = True
                     break
             else:
                 print(f'{license_number} found In System!')
@@ -526,7 +510,7 @@ def get_license_number():
         else :
             print("Invalid license number format! Try again")
 
-    if exit:
+    if go_back:
         cars()
 
     assign_avalilability_menu(license_number)
@@ -773,7 +757,7 @@ def delete_customer():
     passport_id = ''
     valid = False
     found_deleted = False
-    exit = False
+    go_back = False
     print("Please, enter your passport/id:")
     while not valid or not found_deleted:
         valid = False
@@ -785,11 +769,11 @@ def delete_customer():
                 print(f"The customer with that passport {passport_id} does not exist, do you want to try again ? (y/n)")
                 response = input().upper()
                 if response != 'Y':
-                    exit = True
+                    go_back = True
                     break
         else:
             print("Passport number or ID format is SSSSSSS-A, where SSSSSSS is the seven-digit serial number and A is the literal, please correct your input")
-    if exit:
+    if go_back:
         customers_menu()
 
 def find_delete_customer(passport_id):
@@ -810,7 +794,7 @@ def search_customer():
     passport_id = ''
     valid = False
     found = False
-    exit = False
+    go_back = False
     print("Please, enter your passport/id:")
     while not valid or not found:
         valid = False
@@ -822,11 +806,11 @@ def search_customer():
                 print(f"The customer with that passport {passport_id} does not exist, do you want to try again ? (y/n)")
                 response = input().upper()
                 if response != 'Y':
-                    exit = True
+                    go_back = True
                     break
         else:
             print("Passport number or ID format is SSSSSSS-A, where SSSSSSS is the seven-digit serial number and A is the literal, please correct your input")
-    if exit:
+    if go_back:
         customers_menu()
 
 def find_diplay_customer(passport_id):
