@@ -1191,6 +1191,23 @@ class AddingNewCar(unittest.TestCase):
         ]):
             main.cars()
             self.assertEqual(mock_stdout.getvalue(), self.final_message)
+class OrdersBackMenuCar(unittest.TestCase):
+    # Test case 31
+    # Test case for the option to go main menu from cars
+    def setUp(self):
+        self.maxDiff = None
+        self.car_selection = 5
+        self.main_menu = '-------Main Menu-------\nOrders(1)\nCars(2)\nCustomers(3)\nRegister an Order(4)\nExit(5)\n'
+
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_car_to_main_menu(self, mock_stdout):
+        # car menu option to main menu
+        with mock.patch('builtins.input', side_effect=[
+            self.car_selection,
+        ]):
+            main.cars()
+            self.assertIn(self.main_menu, mock_stdout.getvalue())
 
                        
                        
