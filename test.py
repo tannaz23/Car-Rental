@@ -1208,6 +1208,62 @@ class OrdersBackMenuCar(unittest.TestCase):
         ]):
             main.cars()
             self.assertIn(self.main_menu, mock_stdout.getvalue())
+class Registeranorder(unittest.TestCase):
+    # Test case 32
+    #  Test case for register and order par (not found and back)
+    def setUp(self):
+        self.maxDiff = None
+        self.main_message = ("-------Main Menu-------\nOrders(1)\nCars(2\nCustomers(3)\nRegister an Order(4)\nExit(5")
+        self.register_selection = 4
+        self.good_orderid = 7539518
+        self.notfound_orderid_message = 'Order id 7539518 does not exist, do you want to try again ? (Y/y)'
+        self.option_selection = 'N'
+    
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_registerand_order(self, mock_stdout):
+        with mock.patch('builtins.input', side_effect=[
+            self.regester_selection,
+            self.option_selection
+        ]):
+             main_menu()
+             self.assertIn(self.main_message, mock_stdout.getvalue())
+             self.assertIn(self.notfound_orderid_message,mock_stdout.getvalue())
+
+class Closewtheprogram(unittest.TestCase):
+    # Test case 33
+    #  Test case for closing the program
+    def setUp(self):
+        self.maxDiff = None
+        self.main_message =  ("-------Main Menu-------\nOrders(1)\nCars(2\nCustomers(3)\nRegister an Order(4)\nExit(5")
+        self.register_selection = 5
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_close_program(self, mock_stdout):
+        with mock.patch('builtins.input', side_effect=[
+            self.register_selection
+        ]):
+
+           main_menu()
+           self.assertIn(self.main_message, mock_stdout.getvalue())
+
+class InvalidOptionMainmenu
+    # Test case 34
+    # Test case for input invalid number in the main menu
+    def setUp(self):
+        self.maxDiff = None
+        self.main_message =  ("-------Main Menu-------\nOrders(1)\nCars(2\nCustomers(3)\nRegister an Order(4)\nExit(5")
+        self.register_selection = 7
+        self.invalid_message = ("Incorrect try again!")
+    @unittest.expectedFailure
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_invalid_number_mainmenu(self, mock_stdout):
+        with mock.patch('builtins.input', side_effect=[
+            self.register_selection
+        ]):
+            main_menu()
+            self.assertIn(self.main_message, mock_stdout.getvalue())
+            self.assertIn(self.invalid_message, mock_stdout.getvalue())
 
                        
                        
