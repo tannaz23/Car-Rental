@@ -876,6 +876,8 @@ def main_menu():
             break
     
         elif a ==3 :
+        #   customers_menu()
+        #   break
         
             print("------Customer menu------")
             print("Register new customer(1)")
