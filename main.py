@@ -245,79 +245,52 @@ def delete_order():
                 file.write(data)
             print("Order with the id of "+ orderid +" has been successfully deleted")
             break
-def print_order_list():
-    file = open('orders.txt', 'r')
-    print(file.read())   
 def search_order():
-    while 1: 
-        file_read = open('orders.txt', "r")
-        orderid = input("enter order id --- ")
-        orderid = '-'+orderid+'-'
-        lines = file_read.readlines()
-        new_list = []
-        idx = 0
-        for line in lines:
-            if orderid in line:
-                new_list.insert(idx, line)
-                idx += 1
-        file_read.close()
-        if len(new_list)==0:
-            ch24=input("Order id "+orderid +"does not exist, do you want to try again ? (y/n)")
-            if ch24=='y' or ch24=='Y':
-                search_order()
-            else:
-                break    
+    orderid = ''
+    valid = False
+    found = False
+    exit = False
+    print("please, enter order id")
+    while not valid or not found:
+        valid = False
+        orderid = input()
+        if orderid.isnumeric():
+            valid = True
+            found= find_order()
+            if not found:
+                print("Order id"+orderid+"does not exist, do you want to try again?(Y/N)")
+                response = input().upper()
+                if response != Y:
+                    exit=True
+                    break
         else:
-            lineLen = len(new_list)
-            for i in range(lineLen):
-                print("{  Order id --- Passport number---- Pick-up date ------ Return date------ Type of car----Price}")
-                print(end=new_list[i])
-                break
-            break
+            print("Invalid order id format! Try again")
+    if exit:
+        orders()
+    
+    
 def orders():
-    print("------OPTIONS------")
+    print("------Order menu------")
     print("Register an order(1)")
     print("Delete an order(2)")
     print("Print an order list(3)")
     print("Search for a specific order(4)")
     print("Go back(5)")
-    while 1:
-        ch12 = input("What option do you want ?---")
-        if ch12 =='1' or ch12=='r':
-            register_order()
-            break
-        elif ch12=='2' or ch12=='d':    
-            delete_order()
-            break
-        elif ch12=='3' or ch12=='p':
-            print_order_list()
-            print("-------OPTIONS-------")
-            print("Search for a specific order(1)")
-            print("Go back(2)")
-            ch25 = input("---what option do you want ? ---- ")
-            if ch25=='1' or ch25=='s':
-                search_order()
-                print("-----options ------")
-                print("Delete the order(1)")
-                print("Go back(2)")
-                ch26 = input("What options do you want ?---  ")
-                if ch26=='1' or ch26=='d' or ch26=='D':
-                    delete_order()
-                    break
-                elif ch26=='2' or ch26=='g' or ch26=='G':    
-                    orders()
-                    break
-            
-                else :
-                    print("---Invalid options try again ! ---")
-                    
-        elif ch12=='4' or ch12=='s':
-            search_order()
-            break     
-        elif ch12=='5' or ch12=='g':
-            main_menu()
-        else:
-            print("---Invalid option , try again !---")
+    selection = -1
+    while selection not in [1,2,3,4,5]:
+        selection = int(input("Select a valid option to perform\n"))
+        if selection not in [1,2,3,4,5]:
+            print("Invalid option. please try again")
+    if selection == 1:
+        register_order()
+    elif selection == 2:
+        delete_order()
+    elif selection ==3:
+        print_order_list()
+    elif selection == 4:
+        search_order()
+    else:
+        main_menu()
 #-----------------------------------------------------------------------------------------            
             
             
