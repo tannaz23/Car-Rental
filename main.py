@@ -222,7 +222,7 @@ def delete_order():
     while not valid or not found_deleted:
         valid = False
         orderid = input()
-        if orderid.isnumeric()
+        if orderid.isnumeric():
             valid = True
             found_deleted = find_delete_order(orderid)
             if not found_deleted:
