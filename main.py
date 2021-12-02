@@ -267,6 +267,17 @@ def search_order():
             print("Invalid order id format! Try again")
     if exit:
         orders()
+        
+def find_order():
+    found = False
+    with open(_ORDERS_FILE,"r") as order_file:
+        lines = order_file.readline()
+    for line in lines:
+        if orderid in line:
+            found = True
+            data = line.split(";")
+            print(f"Order found:{data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}, {data[5]}")
+    return found
     
     
 def orders():
