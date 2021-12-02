@@ -1247,7 +1247,7 @@ class Closewtheprogram(unittest.TestCase):
            main_menu()
            self.assertIn(self.main_message, mock_stdout.getvalue())
 
-class InvalidOptionMainmenu
+class InvalidOptionMainmenu(unittest.TestCase):
     # Test case 34
     # Test case for input invalid number in the main menu
     def setUp(self):
