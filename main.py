@@ -775,7 +775,8 @@ def list_customers():
     selection = -1
     while selection not in [1,2,3]:
         selection = int(input())
-        print("Invalid option. Please try again!")
+        if selection not in [1,2,3]:
+            print("Invalid option. Please try again!")
     if selection == 1:
         add_new_customer()
     elif selection == 2:
@@ -858,130 +859,33 @@ def find_diplay_customer(passport_id):
 
 # MAIN MENU FUNCTION---------------------------------------------------------------------------------------------------    
 
-# TODO fix this, drop customer menu and use function like the others
-# TODO also check the option nº 4 and 5 not implemented
 def main_menu():
-    while 1 :
-        print("-------Main Menu-------")
-        print("Orders(1)")
-        print("Cars(2)")
-        print("Customers(3)")
-        print("Register an Order(4)")
-        print("Exit(5)")
-        a =int(input("what you want ?! enter the number or first character of it's name ..."))
-        #b = input("what you want ?! enter the number or first character of it's name ...")
-        if a ==1  :
-            orders()
-            break
-    
-        elif a ==2:
-            cars()
-            break
-    
-        elif a ==3 :
-        #   customers_menu()
-        #   break
-        
-            print("------Customer menu------")
-            print("Register new customer(1)")
-            print("List of current customers(2)")
-            print("Search for a customer(3)")
-            print("Go back(4)")
-            ch=int(input("what do you want ?"))
-            if ch==1 :
-                customers1()
-                break
-            elif ch==2:
-                listcustomers()
-                break
-            elif ch==3:
-                searchcustomer()
-                break
-            elif ch==4:
-                customers1()
-                break
-                
-            elif ch==5:
-                None    
-            else:
-                print("-------Invalid option. Please try again!-----------")
-
-        elif a ==4 :
-             register_order()
-        elif a ==5:
-            exit()
-
-
- 
-                
-#---------------------------------------------------------------------------------------------------------------------   
-
-
-# Main program------------------------------------------------------------------------ 
-'''
-while 1 :
     print("-------Main Menu-------")
     print("Orders(1)")
     print("Cars(2)")
     print("Customers(3)")
     print("Register an Order(4)")
     print("Exit(5)")
-    a =int(input("what you want ?! enter the number or first character of it's name ..."))
-    #b = input("what you want ?! enter the number or first character of it's name ...")
-    if a ==1  :
+    print("Please, enter your choice")
+    selection = -1
+    while selection not in [1,2,3,4,5]:
+        selection = int(input())
+        if selection not in [1,2,3,4,5]:
+            print("Invalid option. Please try again!")
+    if selection == 1:
         orders()
-        break
-    
-    elif a ==2:
+    elif selection == 2:
         cars()
-        break
-    
-    elif a ==3 :
-        
-        print("------Customer menu------")
-        print("Register new customer(1)")
-        print("List of current customers(2)")
-        print("Search for a customer(3)")
-        print("Go back(4)")
-        ch=int(input("what do you want ?"))
-        if ch==1 :
-            #customers()
-            first_name=str(get_first_name())
-            last_name = str(get_last_name())
-            address=str(get_address())
-            passportid=str(get_passport_id())
-            credit_card=str(get_credit_card())
-            file1 = open("customers.txt", 'a')
-            file1.write(first_name)
-            file1.write(',')
-            file1.write(last_name)
-            file1.write(',')
-            file1.write(address)
-            file1.write(',')
-            file1.write(passportid)
-            file1.write(',')
-            file1.write(credit_card)
-            file1.write('\n')
-            file1.close()
-            print("Customer registered successfully:","{",first_name,'-----',last_name,'-----',address,'-----',passportid,'-----',credit_card,"}")
-            break
-        elif ch==2:
-            listcustomers()
-            break
-        elif ch==3:
-            searchcustomer()
-            break
-        elif ch==4:
-            main_menu()
-            
-            
-    elif a ==4 :
-        #registeranorder()
-        break
-     
-    elif a ==5 :
-        main_menu()
+    elif selection == 3 :
+        customers_menu()
+    elif selection == 4 :
+            register_order()
     else:
-        print("-------Invalid option. Please try again!-----------")
-'''
+        exit()
+             
+#---------------------------------------------------------------------------------------------------------------------   
+
+
+# Main program------------------------------------------------------------------------ 
+# TODO -> BEFORE UPLOAD ASSIGNMENT, CREATE IN HERE THE TYPICAL MAIN CALL TO MAIN_MENU
 #-----------------------------------------------------------------------------
