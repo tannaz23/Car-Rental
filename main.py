@@ -445,7 +445,7 @@ def assign_avalilability_from_cars(license_number, availability):
                         print("Car successfully moved from unavailable to available")
                     else:
                         line_aux = line.replace('(0)', '(1)')
-                        print("Car successfully moved from unavailable to available")
+                        print("Car successfully moved from available to unavailable")
                     cars_file.write(line_aux)
             else:
                 cars_file.write(line)

@@ -916,12 +916,9 @@ class CarSearch(unittest.TestCase):
         self.maxDiff = None
         self.good_license = '1234ABC'
         self.fining_license_message = '1234ABC found In System!'
-        self.finfing_infromation_message = '\nName,Manufacturer,Year made,License number, Type of energy, category,Availavility'
         self.option_message = '---OPTIONS---\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars(2)\nGo back(3)'
         self.select_option = '2'
-        self.assign_success_message = 'Car successfully moved from unavailable to available'
-        self.final_selection = '6'
-        self.final_selection_main_menu = '5'
+        self.assign_success_message = 'Car successfully moved from available to unavailable'
               
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)      
     def test_search_car_success(self, mock_stdout):
@@ -929,15 +926,11 @@ class CarSearch(unittest.TestCase):
         with mock.patch('builtins.input', side_effect=[
             self.good_license,
             self.select_option,
-            self.final_selection,
-            self.final_selection_main_menu
         ]):
-            with self.assertRaises(SystemExit) as cm: 
-                main.searchcar()
-                self.assertIn(self.fining_license_message, mock_stdout.getvalue())
-                self.assertIn(self.option_message, mock_stdout.getvalue())
-                self.assertIn(self.assign_success_message, mock_stdout.getvalue())
-            self.assertEqual(cm.exception.code, 0)
+            main.searchcar()
+            self.assertIn(self.fining_license_message, mock_stdout.getvalue())
+            self.assertIn(self.option_message, mock_stdout.getvalue())
+            self.assertIn(self.assign_success_message, mock_stdout.getvalue())
             
 class CarSearchmulti(unittest.TestCase):
     # Test case 27
@@ -947,7 +940,7 @@ class CarSearchmulti(unittest.TestCase):
         self.maxDiff = None
         self.bad_license = '1234BBB'                    
         self.notfining_license_message = 'License_number 1234BBB does not exist, do you want to try again ? (Y/y)' 
-        self.option_message =  'Do you want to try again?(Y/N)'
+        self.option_message =  'icense_number 1234BBB does not exist, do you want to try again ? (Y/y)'
         self.select_optionmessage= 'Y'
         self.good_license = '1234MAT'
         self.fining_license_message = '1234MAT found In System!'
@@ -955,8 +948,6 @@ class CarSearchmulti(unittest.TestCase):
         self.select_option = '1'
         self.assign_success_message = 'Car successfully moved from unavailable to available'
         self.select_in_menu = '3'
-        self.final_selection = '6'
-        self.final_selection_main_menu = '5'
                   
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)      
     def test_search_car_success_assign(self, mock_stdout):
@@ -966,18 +957,14 @@ class CarSearchmulti(unittest.TestCase):
                self.select_optionmessage,
                self.good_license,
                self.select_option,
-               self.select_in_menu,
-               self.final_selection,
-               self.final_selection_main_menu
+               self.select_in_menu
         ]):
-                with self.assertRaises(SystemExit) as cm: 
-                     main.searchcar()
-                     self.assertIn(self.notfining_license_message, mock_stdout.getvalue())
-                     self.assertIn(self.option_message, mock_stdout.getvalue())       
-                     self.assertIn(self.fining_license_message, mock_stdout.getvalue())
-                     self.assertIn(self.option_message_second , mock_stdout.getvalue())          
-                     self.assertIn(self.assign_success_message , mock_stdout.getvalue())          
-                self.assertEqual(cm.exception.code, 0)          
+            main.searchcar()
+            self.assertIn(self.notfining_license_message, mock_stdout.getvalue())
+            self.assertIn(self.option_message, mock_stdout.getvalue())       
+            self.assertIn(self.fining_license_message, mock_stdout.getvalue())
+            self.assertIn(self.option_message_second , mock_stdout.getvalue())          
+            self.assertIn(self.assign_success_message , mock_stdout.getvalue())          
                       
 class CarSearchwrong(unittest.TestCase):
     # Test case 28
