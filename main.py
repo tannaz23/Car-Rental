@@ -405,15 +405,14 @@ def get_car_type_energy():
     return car_type_energy
 
 def get_car_type():
-    car_type = ''
-    valid = False
+    car_type = '-1'
     print("---------car types---------")
     print("Hatchback (1)")
     print("Sedan (2)")
     print("Coupe (3)")
     print("SUV (4)")
     print("Please, select car type")
-    while not valid:
+    while car_type not in ['1', '2', '3', '4']:
         car_type = input()
         if car_type not in ['1', '2', '3', '4']:
             print("Invalid type , try again!")

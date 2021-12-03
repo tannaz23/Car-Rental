@@ -1024,7 +1024,7 @@ class AddingNewCar(unittest.TestCase):
         self.bad_format_car_choose = 6
         self.bad_format_car_choose_message = 'Invalid format, try again!\n'
         self.good_format_car_choose= 4
-        self.final_message = 'Astra- 2021- 1234ABC - petrol- SUV- availability= \nCar has been added' 
+        self.final_message = 'Car has been added!' 
   
     @unittest.expectedFailure               
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
@@ -1116,22 +1116,23 @@ class AddingNewCar(unittest.TestCase):
     # all inputs are correct
     def setUp(self):
         self.maxDiff = None     
-        self.choose_option_carmenu = 5
+        self.choose_option_carmenu = '5'
+        self.good_format_license_not_repeated = '8462ZOT'
         self.good_format_license = '1234ABC'
         self.good_format_manufacture = 'Opel'
         self.good_format_name = 'Astra' 
         self.good_format_year = '2021'
         self.good_format_energy = 'petrol'
-        self.good_format_car_choose= 3
-        self.final_message = 'Astra- 2021- 1234ABC - petrol- Coupe - availability=1 \nCar has been added'
+        self.good_format_car_choose = '3'
+        self.final_message = 'Car has been added!'
                        
     def test_format_license(self):
          # license function only good format            
          with mock.patch('builtins.input', side_effect=[
-            self.good_format_license,
+            self.good_format_license_not_repeated,
         ]):                     
             result = main.get_license_plate()
-            self.assertEqual(result, self.good_format_license)           
+            self.assertEqual(result, self.good_format_license_not_repeated)           
                        
     def test_format_manufacture(self):
         # manufacture function
@@ -1139,7 +1140,7 @@ class AddingNewCar(unittest.TestCase):
             self.good_format_manufacture,
         ]):
             result = main.get_car_manu()
-            self.assertEqual(result, self.good_format_manufacture.upper())    
+            self.assertEqual(result, self.good_format_manufacture)    
                        
     def test_format_name(self):
         # name function
@@ -1147,7 +1148,7 @@ class AddingNewCar(unittest.TestCase):
             self.good_format_name,
         ]):
             result = main.get_car_name()
-            self.assertEqual(result, self.good_format_name.upper())                    
+            self.assertEqual(result, self.good_format_name)                    
         
     def test_format_year(self):
         # year function
@@ -1163,9 +1164,8 @@ class AddingNewCar(unittest.TestCase):
             self.good_format_energy,
         ]):
             result = main.get_car_type_energy()
-            self.assertEqual(result, self.good_format_energy.upper())                  
+            self.assertEqual(result, self.good_format_energy)                  
               
-    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_format_cars_addition(self, mock_stdout):
         # Customer addition function
@@ -1179,46 +1179,54 @@ class AddingNewCar(unittest.TestCase):
            self.good_format_car_choose
         ]):
             main.cars()
-            self.assertEqual(mock_stdout.getvalue(), self.final_message)
+            self.assertIn(self.final_message, mock_stdout.getvalue())
 
 class OrdersBackMenuCar(unittest.TestCase):
     # Test case 31
     # Test case for the option to go main menu from cars
     def setUp(self):
         self.maxDiff = None
-        self.car_selection = 5
+        self.car_selection = '6'
         self.main_menu = '-------Main Menu-------\nOrders(1)\nCars(2)\nCustomers(3)\nRegister an Order(4)\nExit(5)\n'
+        self.final_selection = '5'
 
-    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_car_to_main_menu(self, mock_stdout):
         # car menu option to main menu
         with mock.patch('builtins.input', side_effect=[
             self.car_selection,
+            self.final_selection
         ]):
-            main.cars()
-            self.assertIn(self.main_menu, mock_stdout.getvalue())
+            with self.assertRaises(SystemExit) as cm:
+                main.cars()
+                self.assertIn(self.main_menu, mock_stdout.getvalue())
+            self.assertEqual(cm.exception.code, 0)
+
 class Registeranorder(unittest.TestCase):
     # Test case 32
-    #  Test case for register and order par (not found and back)
+    #  Test case for register and order part (not found and back)
     def setUp(self):
         self.maxDiff = None
         self.main_message = ("-------Main Menu-------\nOrders(1)\nCars(2\nCustomers(3)\nRegister an Order(4)\nExit(5")
-        self.register_selection = 4
-        self.good_orderid = 7539518
-        self.notfound_orderid_message = 'Order id 7539518 does not exist, do you want to try again ? (Y/y)'
+        self.register_selection = '4'
+        self.good_orderid = '7539518-P'
+        self.notfound_orderid_message = 'User does not exist, do you want to try again ? (y/n)'
         self.option_selection = 'N'
+        self.final_selection = '5'
     
-    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_registerand_order(self, mock_stdout):
         with mock.patch('builtins.input', side_effect=[
-            self.regester_selection,
-            self.option_selection
+            self.register_selection,
+            self.good_orderid,
+            self.option_selection,
+            self.final_selection
         ]):
-             main_menu()
-             self.assertIn(self.main_message, mock_stdout.getvalue())
-             self.assertIn(self.notfound_orderid_message,mock_stdout.getvalue())
+            with self.assertRaises(SystemExit) as cm:
+                main.main_menu()
+                self.assertIn(self.main_message, mock_stdout.getvalue())
+                self.assertIn(self.notfound_orderid_message,mock_stdout.getvalue())
+            self.assertEqual(cm.exception.code, 0)
 
 class Closewtheprogram(unittest.TestCase):
     # Test case 33
@@ -1226,16 +1234,17 @@ class Closewtheprogram(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
         self.main_message =  ("-------Main Menu-------\nOrders(1)\nCars(2\nCustomers(3)\nRegister an Order(4)\nExit(5")
-        self.register_selection = 5
-    @unittest.expectedFailure
+        self.register_selection = '5'
+
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_close_program(self, mock_stdout):
         with mock.patch('builtins.input', side_effect=[
             self.register_selection
         ]):
-
-           main_menu()
-           self.assertIn(self.main_message, mock_stdout.getvalue())
+            with self.assertRaises(SystemExit) as cm:
+                main.main_menu()
+                self.assertIn(self.main_message, mock_stdout.getvalue())
+            self.assertEqual(cm.exception.code, 0)
 
 class InvalidOptionMainmenu(unittest.TestCase):
     # Test case 34
@@ -1243,27 +1252,19 @@ class InvalidOptionMainmenu(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
         self.main_message =  ("-------Main Menu-------\nOrders(1)\nCars(2\nCustomers(3)\nRegister an Order(4)\nExit(5")
-        self.register_selection = 7
-        self.invalid_message = ("Incorrect try again!")
-    @unittest.expectedFailure
+        self.register_selection = '7'
+        self.invalid_message = ("Invalid option. Please try again!")
+        self.final_selection = '5'
+
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_invalid_number_mainmenu(self, mock_stdout):
         with mock.patch('builtins.input', side_effect=[
-            self.register_selection
+            self.register_selection,
+            self.final_selection
         ]):
-            main_menu()
-            self.assertIn(self.main_message, mock_stdout.getvalue())
-            self.assertIn(self.invalid_message, mock_stdout.getvalue())
+            with self.assertRaises(SystemExit) as cm:
+                main.main_menu()
+                self.assertIn(self.main_message, mock_stdout.getvalue())
+                self.assertIn(self.invalid_message, mock_stdout.getvalue())
+            self.assertEqual(cm.exception.code, 0)
 
-                       
-                       
-                 
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       

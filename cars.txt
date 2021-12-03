@@ -1,2 +1,3 @@
 pride;kia;1388;1234abc;petrol;HATCHBACK;(0)
 pride;saypa;1394;1212bvn;petrol;HATCHBACK;(1)
+ASTRA; OPEL; 2021; 1234ABC; PETROL; COUPE; (0)
