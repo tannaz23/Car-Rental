@@ -539,7 +539,7 @@ def list_all_cars():
 def list_all_available_cars():
     print("------list of all cars available------")
     try:
-        file_read = open(_CARS_FILE, "r")
+        file_read = open('cars-empty.txt', "r")
         text = '(0)'
         lines = file_read.readlines()
         new_list = []
@@ -574,7 +574,7 @@ def list_all_available_cars():
 def list_all_unavailable_cars():
     print("------list of all cars unavailable------")
     try:
-        file_read = open(_CARS_FILE, "r")
+        file_read = open('cars-empty.txt', "r")
         text = '(1)'
         lines = file_read.readlines()
         new_list = []
