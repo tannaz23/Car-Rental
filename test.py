@@ -22,7 +22,7 @@ class OrdersRegister(unittest.TestCase):
         self.maxDiff = None
         self.bad_format_id = '78916-VV'
         self.bad_format_id_message = 'Passport number is incorrect, try again!'
-        self.good_id = '1234567-A'
+        self.good_id = '7894561-Z'
         self.good_id_message = 'Customer found!'
         self.bad_format_pickupdate = 'Adsdsd'
         self.bad_format_pickupdate_message = 'Incorrect date format, try again!'
@@ -66,7 +66,7 @@ class OrdersRegisterFailed(unittest.TestCase):
         self.bad_id = '7891690-V'
         self.bad_format_id_message = 'User does not exist, do you want to try again ? (y/n)'
         self.yes_not_selection_id = 'Y'
-        self.good_id = '1234567-A'
+        self.good_id = '7894561-Z'
         self.good_id_message = 'Customer found!'
         self.good_pickupdate = '20/06/1997'
         self.good_returndate = '19/06/1997'
@@ -138,7 +138,7 @@ class OrdersRegisterNotAvailable(unittest.TestCase):
     # not available car and go back to order menu
     def setUp(self):
         self.maxDiff = None
-        self.good_id = '1234567-A'
+        self.good_id = '7894561-Z'
         self.good_id_message = 'Customer found!'
         self.good_pickupdate = '20/06/1997'
         self.good_returndate = '19/06/1997'
@@ -700,7 +700,7 @@ class CustomerSearch(unittest.TestCase):
         self.bad_message = 'The customer with that passport 7418529-P does not exist, do you want to try again ? (y/n)'
         self.yes_or_not_option = 'Y'
         self.good_id = '7894561-Z'
-        self.success_message = 'Customer found: Tannaz, Kamandi, fake s7reet ******************, 7894561-Z, 7896321458963214'
+        self.success_message = 'Customer found: DAVID, CLEMENTE, FAKE S7TREET ******************, 7894561-Z, 7896321458963214'
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_search_customer_success(self, mock_stdout):
@@ -917,9 +917,9 @@ class CarSearch(unittest.TestCase):
         self.good_license = '1234ABC'
         self.fining_license_message = '1234ABC found In System!'
         self.finfing_infromation_message = '\nName,Manufacturer,Year made,License number, Type of energy, category,Availavility'
-        self.option_message = '\n---OPTIONS---\nAssign to the list of available cars(1))\nAssign to the list of unavailable cars(2)\nGo back(3)'
+        self.option_message = '---OPTIONS---\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars(2)\nGo back(3)'
         self.select_option = '2'
-        self.assign_success_message = '\nCar successfully moved from available to unavailable'
+        self.assign_success_message = 'Car successfully moved from unavailable to available'
         self.final_selection = '6'
         self.final_selection_main_menu = '5'
               
@@ -946,15 +946,14 @@ class CarSearchmulti(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
         self.bad_license = '1234BBB'                    
-        self.notfining_license_message = '\n1234BBB not found in system\n ' 
+        self.notfining_license_message = 'License_number 1234BBB does not exist, do you want to try again ? (Y/y)' 
         self.option_message =  'Do you want to try again?(Y/N)'
         self.select_optionmessage= 'Y'
         self.good_license = '1234MAT'
-        self.fining_license_message = '\n1234ABC found in system\n '
-        self.finfing_infromation_message = '\nName,Manufacturer,Year made,License number, Type of energy, category,Availavility'
-        self.option_message_second = '\n---OPTIONS---\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars\nGo back(3)'
+        self.fining_license_message = '1234MAT found In System!'
+        self.option_message_second = '---OPTIONS---\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars(2)\nGo back(3)'
         self.select_option = '1'
-        self.assign_success_message = '\nCar successfully moved from unavailable to available'
+        self.assign_success_message = 'Car successfully moved from unavailable to available'
         self.select_in_menu = '3'
         self.final_selection = '6'
         self.final_selection_main_menu = '5'
@@ -976,7 +975,6 @@ class CarSearchmulti(unittest.TestCase):
                      self.assertIn(self.notfining_license_message, mock_stdout.getvalue())
                      self.assertIn(self.option_message, mock_stdout.getvalue())       
                      self.assertIn(self.fining_license_message, mock_stdout.getvalue())
-                     self.assertIn(self.finfing_infromation_message , mock_stdout.getvalue())       
                      self.assertIn(self.option_message_second , mock_stdout.getvalue())          
                      self.assertIn(self.assign_success_message , mock_stdout.getvalue())          
                 self.assertEqual(cm.exception.code, 0)          
