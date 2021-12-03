@@ -418,7 +418,7 @@ def get_car_type():
     while not valid:
         car_type = input()
         if car_type not in ['1', '2', '3', '4']:
-            rint("Invalid type , try again!")
+            print("Invalid type , try again!")
     if car_type == '1':
         return 'Hatchback'.upper()
     elif car_type == '2':
