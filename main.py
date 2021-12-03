@@ -10,11 +10,12 @@ _ORDERS_FILE = 'orders.txt'
 def get_passportid():
     passport_id = ''
     valid = False
+    go_back = False
     print("Please, enter a passport/id")
     while not valid:
         valid = False
         passport_id = input()
-        if len(passport_id)==9 and passport_id[0:7].isnumeric() and passport_id[7:8]=='-' and passportid[8:9].isalpha():
+        if len(passport_id)==9 and passport_id[0:7].isnumeric() and passport_id[7:8]=='-' and passport_id[8:9].isalpha():
             valid = True
             if not searchcustomer(passport_id):
                 print("User does not exist, do you want to try again ? (y/n)")
@@ -318,7 +319,7 @@ def check_type_available(car_type):
 
     for line in lines:
         if car_type in line and '(0)' in line:
-            car_data = split(';')
+            car_data = line.split(';')
             return True, car_data[3].upper()
     
     return False, ''
@@ -711,6 +712,7 @@ def get_passport_id():
     valid = False
     print("Please, enter your passport/id:")
     while not valid:
+        passport_id = input()
         if len(passport_id) == 9 and passport_id[0:7].isnumeric() and passport_id[7:8] == '-' and passport_id[8:9].isalpha():
             valid = True
         else:
