@@ -564,7 +564,7 @@ def list_all_available_cars():
     selection = '-1'
     while selection not in ['1','2']:
         selection = input()
-        if election not in ['1','2']:
+        if selection not in ['1','2']:
             print("Invalid option. please try again")
     if selection == '1':
         searchcar()

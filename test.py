@@ -697,7 +697,7 @@ class CustomerSearch(unittest.TestCase):
         self.bad_format_id = '5646-8'
         self.bad_format_message = 'Passport number or ID format is SSSSSSS-A, where SSSSSSS is the seven-digit serial number and A is the literal, please correct your input\n'
         self.bad_id = '7418529-P'
-        self.bad_message = 'The customer with that passport number/id does not exist, do you want to try again ? (y/n)\n'
+        self.bad_message = 'The customer with that passport 7418529-P does not exist, do you want to try again ? (y/n)'
         self.yes_or_not_option = 'Y'
         self.good_id = '7894561-Z'
         self.success_message = 'Customer found: Tannaz, Kamandi, fake s7reet ******************, 7894561-Z, 7896321458963214'
@@ -761,7 +761,6 @@ class CarShowList(unittest.TestCase):
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_list_car_go_back(self,mock_stdout):
         with mock.patch('builtins.input', side_effect=[
-            self.selected_option,
             self.selected_option_second,
             self.final_selection,
             self.final_selection_main_menu
@@ -786,6 +785,7 @@ class CarShowListSearch(unittest.TestCase):
         self.NotFound_License = '1234ABC'
         self.Continue_message = 'License number 1234ABC does not exist.\nDo you want to try again?(Y/N)'
         self.YorN_option_N = 'N'
+        self.availability_menu = '3'
         self.final_selection = '6'
         self.final_selection_main_menu = '5'
 
@@ -795,6 +795,7 @@ class CarShowListSearch(unittest.TestCase):
             self.selected_option,
             self.NotFound_License,
             self.YorN_option_N,
+            self.availability_menu,
             self.final_selection,
             self.final_selection_main_menu
          ]):
@@ -914,7 +915,7 @@ class CarSearch(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
         self.good_license = '1234ABC'
-        self.fining_license_message = '\n1234ABC found in system\n '
+        self.fining_license_message = '1234ABC found In System!'
         self.finfing_infromation_message = '\nName,Manufacturer,Year made,License number, Type of energy, category,Availavility'
         self.option_message = '\n---OPTIONS---\nAssign to the list of available cars(1))\nAssign to the list of unavailable cars(2)\nGo back(3)'
         self.select_option = '2'
@@ -931,12 +932,12 @@ class CarSearch(unittest.TestCase):
             self.final_selection,
             self.final_selection_main_menu
         ]):
-             with self.assertRaises(SystemExit) as cm: 
-                 main.searchcar()
-                 self.assertIn(self.fining_license_message, mock_stdout.getvalue())
-                 self.assertIn(self.option_message, mock_stdout.getvalue())
-                 self.assertIn(self.assign_success_message, mock_stdout.getvalue())
-             self.assertEqual(cm.exception.code, 0)
+            with self.assertRaises(SystemExit) as cm: 
+                main.searchcar()
+                self.assertIn(self.fining_license_message, mock_stdout.getvalue())
+                self.assertIn(self.option_message, mock_stdout.getvalue())
+                self.assertIn(self.assign_success_message, mock_stdout.getvalue())
+            self.assertEqual(cm.exception.code, 0)
             
 class CarSearchmulti(unittest.TestCase):
     # Test case 27
@@ -954,6 +955,7 @@ class CarSearchmulti(unittest.TestCase):
         self.option_message_second = '\n---OPTIONS---\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars\nGo back(3)'
         self.select_option = '1'
         self.assign_success_message = '\nCar successfully moved from unavailable to available'
+        self.select_in_menu = '3'
         self.final_selection = '6'
         self.final_selection_main_menu = '5'
                   
@@ -965,6 +967,7 @@ class CarSearchmulti(unittest.TestCase):
                self.select_optionmessage,
                self.good_license,
                self.select_option,
+               self.select_in_menu,
                self.final_selection,
                self.final_selection_main_menu
         ]):
@@ -991,20 +994,25 @@ class CarSearchwrong(unittest.TestCase):
         self.finfing_infromation_message = '\nName,Manufacturer,Year made,License number, Type of energy, category,Availavility'
         self.option_message_second = '\n---OPTIONS---\nAssign to the list of available cars(1)\nAssign to the list of unavailable cars\nGo back(3)'
         self.select_option = '3'
+        self.final_selection = '6'
+        self.final_selection_main_menu = '5'
   
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_search_car_wrong_format(self, mock_stdout):
         with mock.patch('builtins.input', side_effect=[   
           self.bad_license,
           self.good_license,
-          self.select_option
+          self.select_option,
+          self.final_selection,
+          self.final_selection_main_menu
       ]):
-            main.searchcar()
-            self.assertIn(self.error_license_message, mock_stdout.getvalue())
-            self.assertIn(self.fining_license_message, mock_stdout.getvalue())
-            self.assertIn(self.finfing_infromation_message, mock_stdout.getvalue())
-            self.assertIn(self.option_message_second , mock_stdout.getvalue())
-  
+            with self.assertRaises(SystemExit) as cm:
+                main.searchcar()
+                self.assertIn(self.error_license_message, mock_stdout.getvalue())
+                self.assertIn(self.fining_license_message, mock_stdout.getvalue())
+                self.assertIn(self.finfing_infromation_message, mock_stdout.getvalue())
+                self.assertIn(self.option_message_second , mock_stdout.getvalue())
+            self.assertEqual(cm.exception.code, 0)
                        
 class AddingNewCar(unittest.TestCase):
     # Test case 29
@@ -1119,7 +1127,7 @@ class AddingNewCar(unittest.TestCase):
         self.maxDiff = None     
         self.choose_option_carmenu = '5'
         self.good_format_license_not_repeated = '8462ZOT'
-        self.good_format_license = '1234ABC'
+        self.good_format_license = '1234PBC'
         self.good_format_manufacture = 'Opel'
         self.good_format_name = 'Astra' 
         self.good_format_year = '2021'
