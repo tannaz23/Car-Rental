@@ -1,4 +1,2 @@
 pride;kia;1388;1234abc;petrol;HATCHBACK;(0)
-samand;irankhodro;1396;4321zxc;petrol;Sedan;(0)
-samand;irankhodro;1396;3434uri;petrol;Sedan;(1)
-pride;saypa;1394;1212bvn;petrol;Hatchback;(1)
+pride;saypa;1394;1212bvn;petrol;HATCHBACK;(1)

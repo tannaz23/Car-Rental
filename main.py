@@ -16,7 +16,6 @@ def get_passportid():
         valid = False
         passport_id = input()
         if len(passport_id)==9 and passport_id[0:7].isnumeric() and passport_id[7:8]=='-' and passport_id[8:9].isalpha():
-            valid = True
             if not searchcustomer(passport_id):
                 print("User does not exist, do you want to try again ? (y/n)")
                 response = input().upper()
@@ -25,7 +24,7 @@ def get_passportid():
                     break
             else:
                 print("Customer found!")
-            break
+                valid = True
         else:
             print("Passport number is incorrect, try again!")
 
@@ -42,6 +41,7 @@ def searchcustomer(passport_id):
         if passport_id in line:
             found = True
 
+    print(found)
     return found
 
 def pickup_date():
@@ -82,13 +82,13 @@ def price_table():
 
 
 def order_id():
-    with open(_CARS_FILE, "r") as cars_file:
-        lines = cars_file.readlines()
+    with open(_ORDERS_FILE, "r") as order_file:
+        lines = order_file.readlines()
     count = 0 
     if len(lines) == 0:
-        return 1
+        return '1'
     else:
-        return lines[len(lines)-1].split(";")[0]  
+        return str(int(lines[len(lines)-1].split(";")[0])+1)  
 
 def car_type_choice():
     car_type_choice = ''
@@ -148,7 +148,7 @@ def register_order():
     returndate = return_date()
     car_type, car_license = car_type_choice()
     total_price = get_car_price(car_type)
-    final_record = f"{order_id()}; {passport_id}; {pickupdate}; {returndate}; {car_type}; {car_license}; {total_price}"
+    final_record = f"{order_id()}; {passport_id}; {pickupdate}; {returndate}; {car_type}; {car_license}; {total_price}\n"
     with open(_ORDERS_FILE, 'a') as order_file:
         order_file.write(final_record)
     print("Order registered!")
@@ -166,7 +166,7 @@ def delete_order():
             valid = True
             found_deleted = find_delete_order(orderid)
             if not found_deleted:
-                print(f"The order id does not exist, do you want to try again?(Y/N)")
+                print(f"The order {orderid} does not exist, do you want to try again?(Y/N)")
                 response = input().upper
                 if response != 'Y':
                   go_back = True
@@ -181,18 +181,18 @@ def delete_order():
 def find_delete_order(orderid):
     deleted = False
     with open(_ORDERS_FILE, "r") as orders_file:
-        lines = order_file.readlines()
+        lines = orders_file.readlines()
 
     with open(_ORDERS_FILE, "w") as orders_file:
         for line in lines:
-            if orderid in line:
+            line_data = line.split(";")
+            if orderid == line_data[0]:
                 deleted = True
-                line_data = line.split(";")
                 license_plate = line_data[5].strip()
                 assign_avalilability(license_plate, "(0)")
                 print(f"Order with the id of {orderid} has been successfully deleted")
             else:
-                order_file.write(line)
+                orders_file.write(line)
     return deleted
 
 def print_order_list():
@@ -230,35 +230,35 @@ def search_order():
                 if response != 'Y':
                     go_back = True
                     break
-            else:
-                print("-------OPTIONS-------")
-                print("Delete the order(1)")
-                print("Go back(2)")
-                selection = '-1'
-                while selection not in ['1','2']:
-                    selection = input()
-                    print("Invalid option. please try again")
-                if selection == '1':
-                    delete_order()
-                else:
-                    orders() 
         else:
             print("Invalid order id format! Try again")
     
     if go_back:
         orders()
+    
+    print("-------OPTIONS-------")
+    print("Delete the order(1)")
+    print("Go back(2)")
+    selection = '-1'
+    while selection not in ['1','2']:
+        selection = input()
+        print("Invalid option. please try again")
+    if selection == '1':
+        delete_order()
+    else:
+        orders() 
         
 def find_order(orderid):
     found = False
     with open(_ORDERS_FILE,"r") as order_file:
         lines = order_file.readlines()
     for line in lines:
-        if orderid in line:
-            found = True
-            data = line.split(";")
+        data = line.split(";")
+        if orderid == data[0]:
+            found = True 
             print("Order found!")
             print("Order ID, Passport number, Pick-up date, Return date, Type of car, Car license, Total price")
-            print(f"{data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}, {data[5]}")
+            print(f"{data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}, {data[5]}, {data[6]}")
     return found
     
     
@@ -298,7 +298,7 @@ def add_new_car():
     car_type_energy = get_car_type_energy()
     car_type = get_car_type()
     availability = '(0)'
-    final_record = f"{car_name}; {car_manu}; {car_make_year}; {license_plate}; {car_type_energy}; {car_type}; (0)"
+    final_record = f"{car_name}; {car_manu}; {car_make_year}; {license_plate}; {car_type_energy}; {car_type}; (0)\n"
     with open(_CARS_FILE, 'a') as cars_file:
         cars_file.write(final_record)
     print("Car has been added!")
@@ -333,10 +333,10 @@ def assign_avalilability(license_number, availability):
             if license_number in line:
                 if not availability in line:
                     if availability == '(0)':
-                        line = line.replace('(1)', '(0)')
+                        line_aux = line.replace('(1)', '(0)')
                     else:
-                        line = line.replace('(0)', '(1)')
-                    cars_file.write(line)
+                        line_aux = line.replace('(0)', '(1)')
+                    cars_file.write(line_aux)
             else:
                 cars_file.write(line)
 
@@ -669,7 +669,7 @@ def add_new_customer():
     address=str(get_address())
     passport_id=str(get_passport_id())
     credit_card=str(get_credit_card())
-    final_record = f"{first_name};{last_name};{address};{passport_id};{credit_card}"
+    final_record = f"{first_name};{last_name};{address};{passport_id};{credit_card}\n"
     with open(_CUSTOMERS_FILE, 'a') as customers_file:
         customers_file.write(final_record)
     print(f"Customer registered successfully: {first_name}, {last_name}, {address}, {passport_id}, {credit_card}.")
@@ -852,7 +852,7 @@ def main_menu():
     elif selection == '4':
             register_order()
     else:
-        exit()
+        exit(0)
              
 #---------------------------------------------------------------------------------------------------------------------   
 
