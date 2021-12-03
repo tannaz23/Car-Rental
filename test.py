@@ -872,7 +872,6 @@ class CarAvailableList(unittest.TestCase):
        self.final_selection = '6'
        self.final_selection_main_menu = '5'   
     
-    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_Car_available_list(self, mock_stdout):
         with mock.patch('builtins.input', side_effect=[
