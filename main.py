@@ -38,10 +38,8 @@ def searchcustomer(passport_id):
     with open(_CUSTOMERS_FILE,"r") as customers_file:
         lines = customers_file.readlines()
     for line in lines:
-        if passport_id in line:
+        if passport_id.upper() in line:
             found = True
-
-    print(found)
     return found
 
 def pickup_date():
@@ -108,13 +106,13 @@ def car_type_choice():
             print("Invalid option. Please try again")
         else:
             if selection == '1':
-                car_type_choice = 'Hatchback'.upper()
+                car_type_choice = 'Hatchback'
             elif selection == '2':
-                car_type_choice = 'Sedan'.upper()
+                car_type_choice = 'Sedan'
             elif selection == '3':
-                car_type_choice = 'Coupe'.upper()
+                car_type_choice = 'Coupe'
             else: 
-                car_type_choice = 'SUV'.upper()
+                car_type_choice = 'SUV'
             availability, car_license = check_type_available(car_type_choice)
             if not availability:
                 print(f"Car of type {car_type_choice} is unavailable, Do you want to pick another type (y/n)")
@@ -148,7 +146,7 @@ def register_order():
     returndate = return_date()
     car_type, car_license = car_type_choice()
     total_price = get_car_price(car_type)
-    final_record = f"{order_id()}; {passport_id}; {pickupdate}; {returndate}; {car_type}; {car_license}; {total_price}\n"
+    final_record = f"{order_id().upper()}; {passport_id.upper()}; {pickupdate.upper()}; {returndate.upper()}; {car_type.upper()}; {car_license.upper()}; {total_price.upper()}\n"
     with open(_ORDERS_FILE, 'a') as order_file:
         order_file.write(final_record)
     print("Order registered!")
@@ -186,7 +184,7 @@ def find_delete_order(orderid):
     with open(_ORDERS_FILE, "w") as orders_file:
         for line in lines:
             line_data = line.split(";")
-            if orderid == line_data[0]:
+            if orderid.upper() == line_data[0]:
                 deleted = True
                 license_plate = line_data[5].strip()
                 assign_avalilability(license_plate, "(0)")
@@ -254,7 +252,7 @@ def find_order(orderid):
         lines = order_file.readlines()
     for line in lines:
         data = line.split(";")
-        if orderid == data[0]:
+        if orderid.upper() == data[0]:
             found = True 
             print("Order found!")
             print("Order ID, Passport number, Pick-up date, Return date, Type of car, Car license, Total price")
@@ -298,7 +296,7 @@ def add_new_car():
     car_type_energy = get_car_type_energy()
     car_type = get_car_type()
     availability = '(0)'
-    final_record = f"{car_name}; {car_manu}; {car_make_year}; {license_plate}; {car_type_energy}; {car_type}; (0)\n"
+    final_record = f"{car_name.upper()}; {car_manu.upper()}; {car_make_year.upper()}; {license_plate.upper()}; {car_type_energy.upper()}; {car_type.upper()}; (0)\n"
     with open(_CARS_FILE, 'a') as cars_file:
         cars_file.write(final_record)
     print("Car has been added!")
@@ -308,7 +306,7 @@ def check_if_license_exist(license_plate):
         lines = cars_file.readlines()
 
     for line in lines:
-        if license_plate in line:
+        if license_plate.upper() in line:
             return True
     
     return False
@@ -318,7 +316,7 @@ def check_type_available(car_type):
         lines = cars_file.readlines()
 
     for line in lines:
-        if car_type in line and '(0)' in line:
+        if car_type.upper() in line and '(0)' in line:
             car_data = line.split(';')
             return True, car_data[3].upper()
     
@@ -330,7 +328,7 @@ def assign_avalilability(license_number, availability):
 
     with open(_CARS_FILE, "w") as cars_file:
         for line in lines:
-            if license_number in line:
+            if license_number.upper() in line:
                 if not availability in line:
                     if availability == '(0)':
                         line_aux = line.replace('(1)', '(0)')
@@ -353,7 +351,7 @@ def get_license_plate():
                 print("A car with this license number is already registered in the system")
         else:
             print("License number is of incorrect format, try again")
-    return license_plate.upper()
+    return license_plate
                    
 def get_car_name():
     car_name = ''
@@ -366,7 +364,7 @@ def get_car_name():
         else :
             print("Invalid format, try again!")
     
-    return car_name.upper()
+    return car_name
 
 def get_car_manu():
     manufacturer = ''
@@ -379,7 +377,7 @@ def get_car_manu():
                 valid = True
         else:
             print("Invalid format, try again!")    
-    return manufacturer.upper()
+    return manufacturer
 
 def get_make_year():
     car_make_year = ''
@@ -391,7 +389,7 @@ def get_make_year():
             valid = True
         else:
             print("Invalid format, try again!")
-    return car_make_year.upper()
+    return car_make_year
 
 def get_car_type_energy():
     car_type_energy = ''
@@ -404,7 +402,7 @@ def get_car_type_energy():
             valid = True
         else:
             print("Wrong type of fuel, try again!")
-    return car_type_energy.upper()
+    return car_type_energy
 
 def get_car_type():
     car_type = ''
@@ -420,13 +418,13 @@ def get_car_type():
         if car_type not in ['1', '2', '3', '4']:
             print("Invalid type , try again!")
     if car_type == '1':
-        return 'Hatchback'.upper()
+        return 'Hatchback'
     elif car_type == '2':
-        return 'Sedan'.upper()
+        return 'Sedan'
     elif car_type == '3':
-        return 'Coupe'.upper()
+        return 'Coupe'
     else:
-        return 'SUV'.upper()
+        return 'SUV'
                                         
 def assign_avalilability_from_cars(license_number, availability):
     go_back = False
@@ -435,7 +433,7 @@ def assign_avalilability_from_cars(license_number, availability):
 
     with open(_CARS_FILE, "w") as cars_file:
         for line in lines:
-            if license_number in line:
+            if license_number.upper() in line:
                 if availability in line:
                     if availability == '(0)':
                         print("Car already on the list of available cars")
@@ -444,12 +442,12 @@ def assign_avalilability_from_cars(license_number, availability):
                     go_back = True
                 else:
                     if availability == '(0)':
-                        line = line.replace('(1)', '(0)')
+                        line_aux = line.replace('(1)', '(0)')
                         print("Car successfully moved from unavailable to available")
                     else:
-                        line = line.replace('(0)', '(1)')
+                        line_aux = line.replace('(0)', '(1)')
                         print("Car successfully moved from unavailable to available")
-                    cars_file.write(line)
+                    cars_file.write(line_aux)
             else:
                 cars_file.write(line)
 
@@ -548,7 +546,7 @@ def list_all_available_cars():
         new_list = []
         idx = 0
         for line in lines: 
-            if text in line:
+            if text.upper() in line:
                 new_list.insert(idx, line)
                 idx += 1
         file_read.close()
@@ -583,7 +581,7 @@ def list_all_unavailable_cars():
         new_list = []
         idx = 0
         for line in lines: 
-            if text in line:
+            if text.upper() in line:
                 new_list.insert(idx, line)
                 idx += 1
         file_read.close()
@@ -669,7 +667,7 @@ def add_new_customer():
     address=str(get_address())
     passport_id=str(get_passport_id())
     credit_card=str(get_credit_card())
-    final_record = f"{first_name};{last_name};{address};{passport_id};{credit_card}\n"
+    final_record = f"{first_name.upper()};{last_name.upper()};{address.upper()};{passport_id.upper()};{credit_card.upper()}\n"
     with open(_CUSTOMERS_FILE, 'a') as customers_file:
         customers_file.write(final_record)
     print(f"Customer registered successfully: {first_name}, {last_name}, {address}, {passport_id}, {credit_card}.")
@@ -785,7 +783,7 @@ def find_delete_customer(passport_id):
 
     with open(_CUSTOMERS_FILE, "w") as customers_file:
         for line in lines:
-            if passport_id in line:
+            if passport_id.upper() in line:
                 deleted = True
             else:
                 customers_file.write(line)
@@ -821,7 +819,7 @@ def find_diplay_customer(passport_id):
         lines = customers_file.readlines()
 
     for line in lines:
-        if passport_id in line:
+        if passport_id.upper() in line:
             found = True
             data = line.split(";")
             print(f"Customer found: {data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]}")
