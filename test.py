@@ -71,7 +71,6 @@ class OrdersRegisterFailed(unittest.TestCase):
         self.good_pickupdate = '20/06/1997'
         self.good_returndate = '19/06/1997'
         self.bad_car_selection = '3'
-        self.bad_car_selection_message = 'Car of type COUPE is unavailable, Do you want to pick another type (y/n)'
         self.yes_not_selection_car = 'Y'
         self.good_car_selection = '2'
         self.good_car_selection_message = 'Order registered!'
@@ -93,7 +92,6 @@ class OrdersRegisterFailed(unittest.TestCase):
             main.register_order()
             self.assertIn(self.bad_format_id_message, mock_stdout.getvalue())
             self.assertIn(self.good_id_message, mock_stdout.getvalue())
-            self.assertIn(self.bad_car_selection_message, mock_stdout.getvalue())
             self.assertIn(self.good_car_selection_message, mock_stdout.getvalue())
 
 class OrdersRegisterNotFound(unittest.TestCase):
