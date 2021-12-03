@@ -77,7 +77,7 @@ class OrdersRegisterFailed(unittest.TestCase):
         self.good_car_selection = '2'
         self.good_car_selection_message = 'Order registered!'
     
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_order_register_failed_success(self, mock_stdout):
         # Orders menu option register with bad inputs then good
@@ -118,7 +118,7 @@ class OrdersRegisterNotFound(unittest.TestCase):
         self.last_selection = '5'
         self.final_selection = '5'
     
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_order_register_not_found_back(self, mock_stdout):
         # Orders menu option register with not found customer
@@ -159,7 +159,7 @@ class OrdersRegisterNotAvailable(unittest.TestCase):
         self.final_selection = '5'
         self.final_selection_main_menu = '5'
     
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_order_register_not_available_back(self, mock_stdout):
         # Orders menu option register with not available car
@@ -198,7 +198,7 @@ class OrdersDropSuccessfully(unittest.TestCase):
         self.final_selection = '5'
         self.final_selection_main_menu = '5'
 
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_order_drop(self, mock_stdout):
         # Orders menu option drop with no good format,
@@ -238,7 +238,7 @@ class OrdersDropNotFound(unittest.TestCase):
         self.final_selection = '5'
         self.final_selection_main_menu = '5'
 
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_order_drop(self, mock_stdout):
         # Orders menu option drop with not found
@@ -274,7 +274,7 @@ class OrdersListAndSearch(unittest.TestCase):
         self.final_selection = '5'
         self.final_selection_main_menu = '5'
     
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_list_and_search(self, mock_stdout):
         # Orders menu option list all orders
@@ -309,7 +309,7 @@ class OrdersListAndGoBack(unittest.TestCase):
         self.final_selection = '5'
         self.final_selection_main_menu = '5'
     
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_list_and_back(self, mock_stdout):
         # Orders menu option list all orders
@@ -348,7 +348,7 @@ class OrdersSearchAndGoBack(unittest.TestCase):
         self.final_selection = '5'
         self.final_selection_main_menu = '5'
 
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_search_and_back(self, mock_stdout):
         # Orders menu option search an order
@@ -388,7 +388,7 @@ class OrdersSearchAndDelete(unittest.TestCase):
         self.final_selection = '5'
         self.final_selection_main_menu = '5'
 
-    @unittest.skip("Already tested")
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_search_and_delete(self, mock_stdout):
         # Orders menu option search an order
@@ -406,7 +406,7 @@ class OrdersSearchAndDelete(unittest.TestCase):
                 self.assertIn(self.delete_message, mock_stdout.getvalue())
             self.assertEqual(cm.exception.code, 0)
 
-@unittest.skip("Already tested")
+
 class OrdersBackMenu(unittest.TestCase):
     # Test case 11
     # Test case for the option to go main menu from orders
@@ -415,7 +415,7 @@ class OrdersBackMenu(unittest.TestCase):
         self.orders_selection = '5'
         self.main_menu = '-------Main Menu-------\nOrders(1)\nCars(2)\nCustomers(3)\nRegister an Order(4)\nExit(5)\n'
         self.final_selection_main_menu = '5'
-
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_order_to_main_menu(self, mock_stdout):
         # Orders menu option to main menu
@@ -428,7 +428,7 @@ class OrdersBackMenu(unittest.TestCase):
                 self.assertIn(self.main_menu, mock_stdout.getvalue())
             self.assertEqual(cm.exception.code, 0)
 
-@unittest.skip("Already tested")
+
 class CustomerAddition(unittest.TestCase):
     # Test case 12
     # Test cases for customer addition functionality successfull
@@ -480,7 +480,8 @@ class CustomerAddition(unittest.TestCase):
         ]):
             result = main.get_credit_card()
             self.assertEqual(result, self.good_credit_card)
-    
+            
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_good_format_customer_addition(self, mock_stdout):
         # Customer addition function
@@ -494,7 +495,6 @@ class CustomerAddition(unittest.TestCase):
             main.add_new_customer()
             self.assertIn(self.good_customer_registered_message, mock_stdout.getvalue())
 
-@unittest.skip("Already tested")
 class CustomerAdditionBadFormat(unittest.TestCase):
     # Test case 13
     # Test cases for customer addition functionality with bad formats
@@ -568,7 +568,8 @@ class CustomerAdditionBadFormat(unittest.TestCase):
             result = main.get_credit_card()
             self.assertIn(self.bad_format_credit_card_message, mock_stdout.getvalue())
             self.assertEqual(result, self.good_format_credit_card)
-    
+            
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_bad_format_customer_addition(self, mock_stdout):
         # Customer addition function
@@ -587,7 +588,6 @@ class CustomerAdditionBadFormat(unittest.TestCase):
             main.add_new_customer()
             self.assertIn(self.customer_addition_success, mock_stdout.getvalue())
 
-@unittest.skip("Already tested")
 class CustomerListAllAndAddNew(unittest.TestCase):
     # Test case 14
     # Test cases for customer list display and addition functionality 
@@ -617,7 +617,6 @@ class CustomerListAllAndAddNew(unittest.TestCase):
             self.assertIn(self.list_menu, mock_stdout.getvalue())
             self.assertIn(self.customer_addition_success, mock_stdout.getvalue())
 
-@unittest.skip("Already tested")
 class CustomerListAllAndDelete(unittest.TestCase):
     # Test case 15
     # Test cases for customer list display and drop customer functionality 
@@ -631,7 +630,8 @@ class CustomerListAllAndDelete(unittest.TestCase):
         self.bad_id_message = 'The customer with that passport 7418529-P does not exist, do you want to try again ? (y/n)'
         self.yes_or_not_option = 'Y'
         self.good_format_id = '1234567-A'
-
+        
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_list_customers_and_drop(self, mock_stdout):
         # Customer list current customers
@@ -646,7 +646,6 @@ class CustomerListAllAndDelete(unittest.TestCase):
             self.assertIn(self.list_menu, mock_stdout.getvalue())
             self.assertIn(self.bad_id_message, mock_stdout.getvalue())
 
-@unittest.skip("Already tested")
 class CustomerListAllAndDeleteNotFind(unittest.TestCase):
     # Test case 16
     # Test cases for customer list display and drop customer functionality 
@@ -660,7 +659,8 @@ class CustomerListAllAndDeleteNotFind(unittest.TestCase):
         self.yes_or_not_option = 'N'
         self.final_selection = '4'
         self.final_menu_selection = '5'
-
+        
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_list_customers_and_drop_failed(self, mock_stdout):
         # Customer list current customers
@@ -687,8 +687,7 @@ class CustomerListAllAndGoBack(unittest.TestCase):
         self.selected_option = '3'
         self.final_selection = '4'
         self.final_selection_main_menu = '5'
-
-
+    @unittest.expectedFailure
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_list_customers_go_back(self, mock_stdout):
         # Customer list current customers
