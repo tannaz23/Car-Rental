@@ -123,12 +123,12 @@ def car_type_choice():
                 else:
                     selection = '-1'
             else:
-                assign_avalilability(car_license, "(1)")
+                assign_avalilability(car_license, "(0)")
         
     if go_back:
         orders()
     
-    return car_type_choice, car_license
+    return car_type_choice.upper(), car_license.upper()
 
 def get_car_price(car_type):
     if car_type == 'SUV':
@@ -316,7 +316,7 @@ def check_type_available(car_type):
         lines = cars_file.readlines()
 
     for line in lines:
-        if car_type.upper() in line and '(0)' in line:
+        if car_type.upper() in line and '(1)' in line:
             car_data = line.split(';')
             return True, car_data[3].upper()
     
@@ -416,11 +416,11 @@ def get_car_type():
         car_type = input()
         if car_type not in ['1', '2', '3', '4']:
             print("Invalid type , try again!")
-    if car_type == '1':
+    if car_type == '3':
         return 'Hatchback'
-    elif car_type == '2':
+    elif car_type == '1':
         return 'Sedan'
-    elif car_type == '3':
+    elif car_type == '2':
         return 'Coupe'
     else:
         return 'SUV'
@@ -495,7 +495,7 @@ def get_license_number():
             if flag == 0: 
                 print(f'License_number {license_number} does not exist, do you want to try again ? (Y/y)')
                 ch10=input().upper()
-                if ch10 !='Y':
+                if ch10 =='Y':
                     go_back = True
                     break
             else:
@@ -855,5 +855,6 @@ def main_menu():
 
 
 # Main program------------------------------------------------------------------------ 
-# TODO -> BEFORE UPLOAD ASSIGNMENT, CREATE IN HERE THE TYPICAL MAIN CALL TO MAIN_MENU
+if __name__ == '__main__':
+    main_menu()
 #-----------------------------------------------------------------------------
